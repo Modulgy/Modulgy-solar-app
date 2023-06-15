@@ -10,7 +10,8 @@ class Success<T> extends Result {
 }
 
 class Error extends Result {
+  int errorCode = -1;
   final String errorMessage;
 
-  Error(this.errorMessage);
+  Error(this.errorMessage, {this.errorCode = -1});
 }

@@ -85,9 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result is Success) {
           Navigator.pushReplacementNamed(context, ModulgyRoute.home.getRoute());
         } else {
+          var userErrorMessage = "";
+          switch((result as Error).errorCode) {
+            case 401:
+              userErrorMessage = "Invalid email or password. (401)";
+              break;
+            default:
+              userErrorMessage = result.errorMessage;
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text((result as Error).errorMessage),
+              content: Text(userErrorMessage),
             ),
           );
         }

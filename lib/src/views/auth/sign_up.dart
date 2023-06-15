@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             hintText: 'Email here',
             label: 'Type your email',
             prefix: 'assets/mail.svg',
-            validator: kDebugMode ? null : mailValidate,
+            validator: /*kDebugMode ? null : mailValidate,*/ null,
             onSaved: (value) => _email = value ?? "",
           ).marginBottom(20),
           ModulgyTextField(
@@ -97,9 +97,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Navigator.pushNamed(context, ModulgyRoute.activate.getRoute(),
               arguments: AuthRequest(type: 'user', email: _email, password: _password));
         } else {
+          var userErrorMessage = "";
+          switch((result as Error).errorCode) {
+            case 400:
+              userErrorMessage = "User already exists. (400)";
+              break;
+            case 401:
+              userErrorMessage = "Invalid email or password. (401)";
+              break;
+            case 422:
+              userErrorMessage = "Invalid email or password. (422)";
+              break;
+            default:
+              userErrorMessage = result.errorMessage;
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text((result as Error).errorMessage),
+              content: Text(userErrorMessage),
             ),
           );
         }

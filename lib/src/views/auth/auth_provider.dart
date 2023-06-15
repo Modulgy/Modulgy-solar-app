@@ -28,6 +28,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     String errorMessage = "";
+    int errorCode = -1;
 
     AuthToken? authResult = await ModulgyApiProvider.instance
         .getUnauthenticatedAPIService()
@@ -35,6 +36,8 @@ class AuthProvider with ChangeNotifier {
         .catchError((Object obj) {
       Error? error = onErrorHandler(obj, AuthOperationType.Login);
       if (error != null) {
+        errorMessage = error.errorMessage;
+        errorCode = error.errorCode;
         return null;
       }
     });
@@ -56,7 +59,7 @@ class AuthProvider with ChangeNotifier {
         return Success(authResult);
       }
     } else {
-      return Error(errorMessage);
+      return Error(errorMessage, errorCode: errorCode);
     }
   }
 
@@ -149,7 +152,7 @@ class AuthProvider with ChangeNotifier {
         debugPrint("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
         errorMessage =
             "Error during $operationType: ${res?.statusMessage ?? dioError.error?.toString()}";
-        return Error(errorMessage);
+        return Error(errorMessage, errorCode: res?.statusCode ?? -1);
       default:
         return null;
     }

@@ -145,6 +145,10 @@ class _EnergyChartState extends State<EnergyChart> {
     }
 
     debugPrint(resultDateEntries.toString());
+    var isEmptyEnergy = whEnergyProduced
+    .map((e) => e.energyProduced)
+    .toList()
+    .every((element) => element == 0);
 
     //Let's put the energy in Wh
     var flSpotEnergyProduced = whEnergyProduced
@@ -206,7 +210,7 @@ class _EnergyChartState extends State<EnergyChart> {
           ),
       minX: findMinimum(resultDateEntries),
       maxX: findMaximum(resultDateEntries),
-      minY: -5,
+      minY: isEmptyEnergy ? 0 : -5,
       maxY: maxEnergyEntry,
       lineBarsData: [
         LineChartBarData(
