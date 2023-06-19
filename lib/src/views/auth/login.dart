@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hintText: 'Email here',
           label: 'Type your email',
           prefix: 'assets/mail.svg',
-          validator: kDebugMode ? null : mailValidate,
+          validator: /*kDebugMode ? null : mailValidate*/ null,
           onSaved: (value) => _username = value ?? "",
         ).marginBottom(20),
         ModulgyTextField(
