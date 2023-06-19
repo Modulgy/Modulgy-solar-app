@@ -1,12 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:moduluenergy/src/network/result.dart';
-import 'package:moduluenergy/src/utils/app_styles.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 import 'package:moduluenergy/src/utils/validators.dart';
 import 'package:moduluenergy/src/widgets/global_margin.dart';
 import 'package:provider/provider.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../main.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/auth_bottom.dart';
@@ -43,32 +42,32 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         WelcomeHeader(
-          'Welcome Back!',
-          'Sign In to your account',
+          Localized.of(context).welcome_back,
+          Localized.of(context).sign_in_prompt,
         ).marginBottom(100),
         ModulgyTextField(
-          hintText: 'Email here',
-          label: 'Type your email',
+          hintText: Localized.of(context).email_hint,
+          label: Localized.of(context).email_label,
           prefix: 'assets/mail.svg',
           validator: /*kDebugMode ? null : mailValidate*/ null,
           onSaved: (value) => _username = value ?? "",
         ).marginBottom(20),
         ModulgyTextField(
-          hintText: 'Password here',
-          label: 'Type your password',
+          hintText: Localized.of(context).password_hint,
+          label: Localized.of(context).password_label,
           obscureText: true,
           validator: passwordValidate,
           onSaved: (value) => _password = value ?? "",
         ).marginBottom(15),
         ForgotPassword().marginBottom(80),
         ModulgyButton(
-                title: "Sign In",
+                title: Localized.of(context).signin_button,
                 onPressed: onLoginPressed,
                 buttonState: getButtonState(auth.loggedInStatus))
             .marginOnly(bottom: 30),
         AuthBottom(
-          text1: 'Don\'t have account?',
-          text2: 'Sign Up',
+          text1:Localized.of(context).no_account,
+          text2: Localized.of(context).signup_text,
           onRedirectPressed: () =>
               {Navigator.pushNamed(context, ModulgyRoute.signup.getRoute())},
         )
@@ -88,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           var userErrorMessage = "";
           switch((result as Error).errorCode) {
             case 401:
-              userErrorMessage = "Invalid email or password. (401)";
+              userErrorMessage = Localized.of(context).invalid_email_or_password_error;
               break;
             default:
               userErrorMessage = result.errorMessage;

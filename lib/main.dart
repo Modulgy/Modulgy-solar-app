@@ -11,7 +11,10 @@ import 'package:moduluenergy/src/views/auth/sign_up.dart';
 import 'package:moduluenergy/src/views/auth/user_provider.dart';
 import 'package:moduluenergy/src/views/home/home_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+
+import 'generated/l10n.dart';
 import 'src/views/connect/connect_device.dart';
 
 void main() {
@@ -55,8 +58,13 @@ class ModulgyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (_) => MokoConnectionProvider())
             ],
             child: MaterialApp(
-              title: 'Modulenergy',
+              title: 'Modulgy',
               debugShowCheckedModeBanner: false,
+              supportedLocales: Localized.delegate.supportedLocales,
+              localizationsDelegates: const [Localized.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate],
               theme: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
                   labelStyle: AppStyles.textFieldStyle,

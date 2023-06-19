@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:moduluenergy/src/network/models.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 import 'package:provider/provider.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../main.dart';
 import '../../network/result.dart';
 import '../../widgets/app_button.dart';
@@ -44,19 +44,22 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
     AuthProvider auth = Provider.of<AuthProvider>(context);
     return Column(
       children: [
-        WelcomeHeader('Verify Code', 'Please enter the code we just sent to your email address')
+        WelcomeHeader(Localized.of(context).verify_code,
+                Localized.of(context).enter_code_text)
             .marginBottom(100),
         ActivationCodeField(controller: _activationCodeController)
             .marginBottom(20),
         ModulgyButton(
-            title: "Activate",
-            buttonState: getButtonState(auth.registeredInStatus),
-            onPressed: onActivationCodePressed
-        ).marginOnly(bottom: 30),
+                title: Localized.of(context).activate_button,
+                buttonState: getButtonState(auth.registeredInStatus),
+                onPressed: onActivationCodePressed)
+            .marginOnly(bottom: 30),
         AuthBottom(
-          text1: 'Haven’t received a code?',
-          text2: 'Resend',
-          onRedirectPressed: () => { /* resend code logic goes here */ },
+          text1: Localized.of(context).no_code,
+          text2: Localized.of(context).resend_text,
+          onRedirectPressed: () => {
+            /* resend code logic goes here */
+          },
         )
       ],
     );
@@ -72,8 +75,8 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
       AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
       auth.activate(email, password, _activationCode).then((result) {
         if (result is Success) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, ModulgyRoute.home.getRoute(), (Route<dynamic> route) => false);
+          Navigator.pushNamedAndRemoveUntil(context,
+              ModulgyRoute.home.getRoute(), (Route<dynamic> route) => false);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -84,8 +87,8 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please enter a valid 6 digit code"),
+         SnackBar(
+          content: Text(Localized.of(context).valid_code_error),
         ),
       );
     }

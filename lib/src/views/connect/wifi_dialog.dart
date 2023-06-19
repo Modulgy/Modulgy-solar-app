@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../generated/l10n.dart';
+
 class WifiDialog extends StatefulWidget {
   void Function(String ssid, String password) onSubmitted;
 
@@ -25,20 +27,20 @@ class _WifiDialogState extends State<WifiDialog> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('WiFi Setup'),
+          title: Text(Localized.of(context).wifi_setup),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: ssidController,
-                decoration: const InputDecoration(
-                  labelText: 'Network Name (SSID)',
+                decoration: InputDecoration(
+                  labelText: Localized.of(context).network_name_label,
                 ),
               ),
               TextField(
                 controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  labelText: Localized.of(context).password_hint,
                 ),
               ),
             ],
@@ -50,7 +52,7 @@ class _WifiDialogState extends State<WifiDialog> {
                 widget.onSubmitted(
                     ssidController.text, passwordController.text);
               },
-              child: Text('Save'),
+              child: Text(Localized.of(context).save_button),
             ),
           ],
         );

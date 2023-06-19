@@ -9,6 +9,7 @@ import 'package:moduluenergy/src/views/auth/login_components.dart';
 import 'package:moduluenergy/src/views/home/chart_view.dart';
 import 'package:intl/intl.dart';
 
+import '../../../generated/l10n.dart';
 import '../../network/result.dart';
 import '../../utils/app_styles.dart';
 import 'home_components.dart';
@@ -83,7 +84,7 @@ Widget headerSection(BuildContext context) {
       child: Row(children: [
         Expanded(
           flex: 6,
-          child: WelcomeHeader("Welcome 👋", "Let's manage your smart solar",
+          child: WelcomeHeader(Localized.of(context).welcome_text, Localized.of(context).app_introduction,
                   headerStyle: AppStyles.dashboardHeadingStyle,
                   descriptionStyle: AppStyles.dashboardDescriptionStyle)
               .marginAll(16),
@@ -120,11 +121,11 @@ Widget graphSection(List<EnergyProduced> energyProduced) {
     padding: const EdgeInsets.all(16),
     child: Column(
       children: [
-        Row(children: const [
+        Row(children: [
           Expanded(
-              child: Text("Energy Produced",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-          Text("Weekly", style: TextStyle(fontSize: 12, color: Colors.grey))
+              child: Text(Localized.current.energy_produced,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+          Text(Localized.current.weekly_text, style: const TextStyle(fontSize: 12, color: Colors.grey))
         ]),
         EnergyChart(energyProduced),
       ],
@@ -146,10 +147,10 @@ Widget cardsSection(List<EnergyProduced> energyProduced) {
       children: [
         Expanded(
           child: DashboardCard(
-            title: 'Electricity\nCost',
+            title: Localized.current.electricity_cost,
             dataValue:
                 "${(energyProducedThisWeek * costOfElectricity).toStringAsFixed(2)}€", // Replace with the actual data value
-            periodValue: 'This Week',
+            periodValue: Localized.current.this_week,
             backgroundColor:
                 Color(0xff7C53E5), // Customize the background color here
           ),
@@ -157,10 +158,10 @@ Widget cardsSection(List<EnergyProduced> energyProduced) {
         const SizedBox(width: 16), // Adjust the spacing between cards as needed
         Expanded(
           child: DashboardCard(
-            title: 'Solar Energy Produced',
+            title: Localized.current.solar_energy_produced,
             dataValue: "${energyProducedThisWeek.toStringAsFixed(1)}KWh",
             // Replace with the actual data value
-            periodValue: 'This Week',
+            periodValue: Localized.current.this_week,
             backgroundColor:
                 const Color(0xffEC8C60), // Customize the background color here
           ),
@@ -192,8 +193,7 @@ Future<Result> getEnergyForLastWeek() async {
       case DioError:
         final dioError = error as DioError;
         final res = dioError.response;
-        errorMessage =
-            "Error during fetch ${res?.statusMessage ?? dioError.error?.toString()}";
+        errorMessage = Localized.current.error_operation(res?.statusMessage?.toString() ?? "", dioError.error?.toString() ?? "");
         debugPrint(errorMessage);
         return null;
       default:

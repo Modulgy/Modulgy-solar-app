@@ -1,28 +1,22 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moduluenergy/main.dart';
 import 'package:moduluenergy/src/network/mokodevice/moko_connection_provider.dart';
-import 'package:moduluenergy/src/network/mokodevice/moko_models.dart';
 import 'package:moduluenergy/src/network/result.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 import 'package:moduluenergy/src/utils/user_preferences.dart';
-import 'package:moduluenergy/src/views/connect/wifi_dialog.dart';
-import 'dart:async';
 import 'dart:io';
-import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:provider/provider.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
 //import 'package:wifi_iot/wifi_iot.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 
+import '../../../generated/l10n.dart';
 import '../../network/models.dart';
 import '../../widgets/app_button.dart';
-import '../../widgets/global_margin.dart';
 import '../auth/login_components.dart';
 
 class ConnectDeviceScreen extends StatefulWidget {
@@ -61,18 +55,18 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 90, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 90, 20, 20),
       child: BodyWidget(),
     ));
   }
 
   Widget availableDevicesList(List<WiFiAccessPoint> deviceList) {
     return _wifiList.isEmpty
-        ? const Expanded(
+        ? Expanded(
             child: Center(
                 child: Text(
-            "No Wifi devices",
-            style: TextStyle(fontSize: 18),
+            Localized.of(context).no_wifi_devices,
+            style: const TextStyle(fontSize: 18),
           )))
         : Expanded(
             child: ListView.builder(
@@ -116,7 +110,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
                 )).marginBottom(30),
             Text(
               configurationStepDescriptions[provider.configurationStep] ??
-                  "Connecting...",
+                  Localized.of(context).connecting,
               style:
                   const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
             )
@@ -135,8 +129,8 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
         Row(children: [
           Expanded(
               flex: 5,
-              child: WelcomeHeader('Connect to Device',
-                  'Press the power button to start the pairing mode.')),
+              child: WelcomeHeader(Localized.of(context).connect_to_device,
+                  Localized.of(context).press_power_button_text)),
           Platform.isAndroid
               ? Flexible(
                   child: IconButton(
@@ -156,10 +150,11 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
         else if (Platform.isIOS)
           showiOSPromptToConnectToWifi(),
         ModulgyButton(
-            title: "Connect",
+            title: Localized.of(context).connect_button,
             buttonState: ((_selectedIndex == -1 ||
-                    connectionProvider.connectionStatus ==
-                        DeviceConnectionStatus.connecting) && Platform.isAndroid)
+                        connectionProvider.connectionStatus ==
+                            DeviceConnectionStatus.connecting) &&
+                    Platform.isAndroid)
                 ? ButtonState.disabled
                 : ButtonState.enabled,
             onPressed: () => {
@@ -192,15 +187,13 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
         showSnackbarError("Error: ${can.toString()}");
         break;
       case CanStartScan.noLocationPermissionUpgradeAccuracy:
-        showSnackbarError(
-            "Location permission denied, please enable it in the settings.");
+        showSnackbarError(Localized.current.location_permission_error);
         break;
       case CanStartScan.noLocationServiceDisabled:
-        showSnackbarError(
-            "Location service disabled, please enable it in the settings.");
+        showSnackbarError(Localized.current.location_service_error);
         break;
       case CanStartScan.failed:
-        showSnackbarError("Failed to start scan");
+        showSnackbarError(Localized.current.scan_start_error);
         break;
     }
   }
@@ -262,8 +255,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
 
       _mqttConnectionInternal(provider, userUuid);
     } else {
-      showSnackbarError(
-          "WiFi connection failed. Make sure the device is on and in pairing mode.");
+      showSnackbarError(Localized.current.wifi_connection_error);
     }
   }
 
@@ -275,7 +267,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   void _mqttConnectionInternal(
       MokoConnectionProvider provider, String userUuid) async {
     var mqttParametersConfigurationResult =
-        await provider.configureMQTTParameters(userUuid);
+    await provider.configureMQTTParameters(userUuid);
     debugPrint(
         "MQTT Parameters configuration result is: $mqttParametersConfigurationResult");
 
@@ -283,26 +275,34 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
       //now we're going to ask the wifi credentials.
       showWifiDialog(
           context,
-          (ssid, password) => {
-                provider
-                    .configureWifiInformation(ssid, password)
-                    .then((wifiParametersConfigurationResult) => {
-                          if (wifiParametersConfigurationResult is Success)
-                            {
-                              //TODO redirect to dashboard!
-                              showSnackbarError(
-                                  "Device successfully configured. You can now use it."),
-                            }
-                          else
-                            {
-                              showSnackbarError(
-                                  "WiFi Parameters configuration failed: ${(wifiParametersConfigurationResult as Error).errorMessage}")
-                            }
-                        })
-              });
+              (ssid, password) =>
+          {
+            provider
+                .configureWifiInformation(ssid, password)
+                .then((wifiParametersConfigurationResult) =>
+            {
+              if (wifiParametersConfigurationResult is Success)
+                {
+                  //TODO redirect to dashboard!
+                  showSnackbarError(Localized
+                      .current.device_configuration_success),
+                }
+              else
+                {
+                  //TODO parameters
+                  //wifi_parameters_configuration_error
+                  showSnackbarError(Localized.current
+                      .wifi_parameters_configuration_error(
+                      (wifiParametersConfigurationResult
+                      as Error)
+                          .errorMessage))
+                }
+            })
+          });
     } else {
       showSnackbarError(
-          "MQTT Parameters configuration failed: ${(mqttParametersConfigurationResult as Error).errorMessage}");
+          Localized.current.wifi_parameters_configuration_error(
+              (mqttParametersConfigurationResult as Error).errorMessage));
     }
   }
 
@@ -312,21 +312,21 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('WiFi Setup'),
+          title: Text(Localized.current.wifi_setup),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: ssidController,
-                decoration: const InputDecoration(
-                  labelText: 'Network Name (SSID)',
+                decoration: InputDecoration(
+                  labelText: Localized.current.network_name_label,
                 ),
               ),
               TextField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  labelText: Localized.current.password_hint,
                 ),
               ),
             ],
@@ -337,7 +337,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
                 Navigator.of(context).pop();
                 onSubmitted(ssidController.text, passwordController.text);
               },
-              child: const Text('Save'),
+              child: Text(Localized.current.save_button),
             ),
           ],
         );
@@ -353,49 +353,51 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
           Icons.wifi,
           size: 80,
         ).marginBottom(16), // Replace with the actual image path,
-      RichText(
-        text: TextSpan(
-          style: TextStyle(fontSize: 15, color: Colors.black, fontFamily: GoogleFonts.urbanist().fontFamily, height: 1.5),
-          children: const <TextSpan>[
-            TextSpan(
-              text: 'To connect to the Device, follow these steps:\n    ',
-              style: TextStyle(fontWeight: FontWeight.normal),
-            ),
-            TextSpan(
-              text: '1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n'
-              '2. Open the Wi-Fi settings on your device.\n'
-                  '3. Connect to the network named "MK117-xxxx".\n'
-                  '   (Make sure your device is in the range of the network.)\n'
-                  '4. When prompted, enter the password: ',
-              style: TextStyle(fontWeight: FontWeight.normal),
-            ),
-            TextSpan(
-              text: 'Moko4321',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextSpan(
-              text: '.\n'
-                  '5. Once connected, return to this app and press ',
-              style: TextStyle(fontWeight: FontWeight.normal),
-            ),
-            TextSpan(
-              text: 'Connect',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextSpan(
-              text: '.',
-              style: TextStyle(fontWeight: FontWeight.normal),
-            ),
-          ],
-        ),
-      ).marginBottom(16),
+        RichText(
+          text: TextSpan(
+            style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: GoogleFonts.urbanist().fontFamily,
+                height: 1.5),
+            children: <TextSpan>[
+              TextSpan(
+                text: Localized.current.connection_instructions,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
+              TextSpan(
+                text: Localized.current.connection_step1 +
+                    Localized.current.connection_step2 +
+                    Localized.current.connection_step3 +
+                    Localized.current.connection_step4,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
+              const TextSpan(
+                text: 'Moko4321',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: '.\n${Localized.current.connection_step5}',
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
+              TextSpan(
+                text: Localized.current.connect_button,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const TextSpan(
+                text: '.',
+                style: TextStyle(fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+        ).marginBottom(16),
         TextButton(
           onPressed: () {
             AppSettings.openWIFISettings();
           },
-          child: const Text(
-            'Open Settings Page',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          child: Text(
+            Localized.current.open_settings_button,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
       ],

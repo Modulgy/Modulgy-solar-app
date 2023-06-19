@@ -9,6 +9,7 @@ import 'package:moduluenergy/src/network/models.dart';
 import 'package:moduluenergy/src/network/modulgy_api_service.dart';
 import 'package:moduluenergy/src/network/result.dart';
 
+import '../../../generated/l10n.dart';
 import '../../utils/user_preferences.dart';
 
 enum Status { NotAuthenticated, Authenticating, Authenticated }
@@ -150,8 +151,7 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         debugPrint("error: ${dioError.error}");
         debugPrint("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
-        errorMessage =
-            "Error during $operationType: ${res?.statusMessage ?? dioError.error?.toString()}";
+        errorMessage = Localized.current.error_operation(operationType ?? AuthOperationType.Login, res?.statusMessage ?? dioError.error?.toString() ?? "");
         return Error(errorMessage, errorCode: res?.statusCode ?? -1);
       default:
         return null;

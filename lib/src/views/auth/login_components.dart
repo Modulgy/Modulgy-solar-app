@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 
+import '../../../generated/l10n.dart';
 import '../../utils/app_styles.dart';
 import '../../widgets/app_button.dart';
 import 'auth_provider.dart';
@@ -27,7 +28,7 @@ Widget ForgotPassword() {
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
       Text(
-        'Forgot Password?',
+        Localized.current.forgot_password,
         style: AppStyles.forgotPassword,
       )
     ],
@@ -49,9 +50,9 @@ class ActivationCodeField extends StatelessWidget {
         LengthLimitingTextInputFormatter(6),
         FilteringTextInputFormatter.digitsOnly
       ],
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter Activation Code',
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: Localized.of(context).enter_activation_code,
       ),
       style: const TextStyle(
         fontSize: 24,

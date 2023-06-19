@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:moduluenergy/generated/l10n.dart';
 
 import '../result.dart';
 import 'moko_models.dart';
@@ -150,7 +151,7 @@ class MokoConnectionService {
       return Success<T>(response);
     } else {
       return Error(
-          "There was an error with the connection with the Moko device. - ${mokoCode.toString()}");
+        Localized.current.device_error(mokoCode.toString()));
     }
   }
 }
