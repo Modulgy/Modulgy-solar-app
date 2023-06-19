@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -9,11 +10,24 @@ class DashboardCard extends StatelessWidget {
   final String periodValue;
   final Color backgroundColor;
 
+  final double dataValueTextSize;
+  final double labelTextSize;
+
+  final Color labelTextColor;
+  final Color dataValueTextColor;
+
+  final bool hasElevation;
+
   const DashboardCard({
     required this.title,
     this.dataValue,
-    required this.periodValue,
+    this.periodValue = "",
     required this.backgroundColor,
+    this.dataValueTextSize = 24,
+    this.labelTextSize = 16,
+    this.labelTextColor = Colors.white,
+    this.dataValueTextColor = Colors.white,
+    this.hasElevation = true,
   });
 
   @override
@@ -24,38 +38,41 @@ class DashboardCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
+      elevation: hasElevation ? 5 : 0,
       color: backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(22.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: labelTextSize,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: labelTextColor,
               ),
             ),
             const SizedBox(height: 8),
             isDataValueAvailable
                 ? Text(
               dataValue!,
-              style: const TextStyle(
-                fontSize: 24,
+              style: TextStyle(
+                fontSize: dataValueTextSize,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: dataValueTextColor,
               ),
             )
                 : const CircularProgressIndicator(),
-            Text(
-              periodValue,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-              ),
-            ),
+              periodValue.isNotEmpty ?
+              Text(
+                periodValue,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ) : Container(height: 0,),
           ],
         ),
       ),

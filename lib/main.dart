@@ -10,6 +10,8 @@ import 'package:moduluenergy/src/views/auth/login.dart';
 import 'package:moduluenergy/src/views/auth/sign_up.dart';
 import 'package:moduluenergy/src/views/auth/user_provider.dart';
 import 'package:moduluenergy/src/views/home/home_screen.dart';
+import 'package:moduluenergy/src/views/main_screen.dart';
+import 'package:moduluenergy/src/views/production/production_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -46,11 +48,14 @@ class ModulgyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<UserData> getUserData() => UserPreferences().getUser();
 
+    final tabs = [          // list of widgets to be displayed when a tab is selected
+      HomeScreen(),
+      ProductionScreen()
+    ];
+
     return FutureBuilder(
       future: getUserData(),
       builder: (context, snapshot) {
-
-        debugPrint("userData: ${snapshot.data?.email ?? "null"}");
         return snapshot.hasData ? MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => AuthProvider()),
@@ -79,7 +84,7 @@ class ModulgyApp extends StatelessWidget {
                 ModulgyRoute.signup.getRoute(): (context) => const SignUpScreen(),
                 ModulgyRoute.activate.getRoute(): (context) =>
                 const ActivationCodeScreen(),
-                ModulgyRoute.home.getRoute(): (context) => HomeScreen(),
+                ModulgyRoute.home.getRoute(): (context) => MainScreen(),
                 ModulgyRoute.connect.getRoute(): (context) =>
                 const ConnectDeviceScreen(),
               },
