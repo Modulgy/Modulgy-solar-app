@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:moduluenergy/src/network/mokodevice/moko_connection_service.dart';
 import 'package:moduluenergy/src/network/mokodevice/moko_models.dart';
 
+import '../../../generated/l10n.dart';
 import '../result.dart';
 
 enum DeviceConnectionStatus {
@@ -197,7 +198,7 @@ class MokoConnectionProvider with ChangeNotifier {
     _configurationStep = DeviceConfigurationStep.idle;
     notifyListeners();
     debugPrint("error: ${obj}");
-    errorMessage = "Error during $operationType: ${obj.toString()}";
+    errorMessage = Localized.current.error_operation(operationType, obj.toString());
     return Error(errorMessage);
   }
 }
