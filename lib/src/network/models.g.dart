@@ -184,3 +184,21 @@ Map<String, dynamic> _$AuthTokenToJson(AuthToken instance) => <String, dynamic>{
       'type': instance.type,
       'body': instance.body,
     };
+
+Article  _$ArticleFromJson(Map<String, dynamic> json) => Article(
+      id: json['id'] as int,
+      date: json['date'] as String,
+      link: json['link'] as String,
+      title: json['title']['rendered'] as String,
+      featuredMediaUrl:
+          Article._featuredMediaFromJson(json['_embedded']['wp:featuredmedia']),
+    );
+
+Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
+      'id': instance.id,
+      'date': instance.date,
+      'link': instance.link,
+      'title': instance.title,
+      'wp:featuredmedia':
+          Article._featuredMediaToJson(instance.featuredMediaUrl),
+    };

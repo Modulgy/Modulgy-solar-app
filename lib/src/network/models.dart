@@ -236,3 +236,40 @@ class AuthToken {
 
   Map<String, dynamic> toJson() => _$AuthTokenToJson(this);
 }
+
+@JsonSerializable()
+class Article {
+  final int id;
+  final String date;
+  final String link;
+  final String title;
+
+  @JsonKey(
+    name: 'wp:featuredmedia',
+    fromJson: _featuredMediaFromJson,
+    toJson: _featuredMediaToJson,
+  )
+  String featuredMediaUrl;
+
+  Article({
+    required this.id,
+    required this.date,
+    required this.link,
+    required this.title,
+    required this.featuredMediaUrl,
+  });
+
+  factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
+  Map<String, dynamic> toJson() => _$ArticleToJson(this);
+
+  static String _featuredMediaFromJson(dynamic value) {
+    // Retrieve the source URL from the provided JSON structure
+    return value[0]['source_url'] + ".webp";
+  }
+
+  static dynamic _featuredMediaToJson(String value) {
+    // Not required for serialization, only used during deserialization
+    throw UnimplementedError();
+  }
+}
+

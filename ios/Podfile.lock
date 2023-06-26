@@ -8,6 +8,8 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
   - wifi_iot (0.0.1):
     - Flutter
   - wifi_scan (0.0.1):
@@ -18,6 +20,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
   - wifi_iot (from `.symlinks/plugins/wifi_iot/ios`)
   - wifi_scan (from `.symlinks/plugins/wifi_scan/ios`)
 
@@ -30,6 +33,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
   wifi_iot:
     :path: ".symlinks/plugins/wifi_iot/ios"
   wifi_scan:
@@ -40,6 +45,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
   wifi_iot: b5aafd6f9b52f8a357383a1deabab45f31cd602d
   wifi_scan: 6d20b3b4f59bbad1ddcf3e241560f3acd62f6cbe
 

@@ -21,7 +21,7 @@ class _ModulgyApiService implements ModulgyApiService {
   String? baseUrl;
 
   @override
-  Future<EnergyProductionResponseBody> getMyEnergyProduction(
+  Future<EnergyProductionResponseBody?> getMyEnergyProduction(
     String period,
     String from,
     String to,
@@ -33,7 +33,7 @@ class _ModulgyApiService implements ModulgyApiService {
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<EnergyProductionResponseBody>(Options(
       method: 'GET',
       headers: _headers,
@@ -46,7 +46,9 @@ class _ModulgyApiService implements ModulgyApiService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = EnergyProductionResponseBody.fromJson(_result.data!);
+    final value = _result.data == null
+        ? null
+        : EnergyProductionResponseBody.fromJson(_result.data!);
     return value;
   }
 
@@ -267,13 +269,13 @@ class _ModulgyApiService implements ModulgyApiService {
   }
 
   @override
-  Future<UserResponseBody> me() async {
+  Future<UserResponseBody?> me() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserResponseBody>(Options(
+        .fetch<Map<String, dynamic>?>(_setStreamType<UserResponseBody>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -285,7 +287,8 @@ class _ModulgyApiService implements ModulgyApiService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = UserResponseBody.fromJson(_result.data!);
+    final value =
+        _result.data == null ? null : UserResponseBody.fromJson(_result.data!);
     return value;
   }
 

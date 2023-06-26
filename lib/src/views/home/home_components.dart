@@ -3,6 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moduluenergy/src/views/home/web_view_screen.dart';
+
+import '../../network/models.dart';
 
 class DashboardCard extends StatelessWidget {
   final String title;
@@ -57,25 +60,81 @@ class DashboardCard extends StatelessWidget {
             const SizedBox(height: 8),
             isDataValueAvailable
                 ? Text(
-              dataValue!,
-              style: TextStyle(
-                fontSize: dataValueTextSize,
-                fontWeight: FontWeight.bold,
-                color: dataValueTextColor,
-              ),
-            )
+                    dataValue!,
+                    style: TextStyle(
+                      fontSize: dataValueTextSize,
+                      fontWeight: FontWeight.bold,
+                      color: dataValueTextColor,
+                    ),
+                  )
                 : const CircularProgressIndicator(),
-              periodValue.isNotEmpty ?
-              Text(
-                periodValue,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
-              ) : Container(height: 0,),
+            periodValue.isNotEmpty
+                ? Text(
+                    periodValue,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  )
+                : Container(
+                    height: 0,
+                  ),
           ],
         ),
       ),
     );
+  }
+}
+
+class ArticleWidget extends StatelessWidget {
+  final Article article;
+
+  ArticleWidget({required this.article});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WebViewScreen(url: article.link, title: article.title,),
+            ),
+          );
+        },
+        child: Container(
+          width: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.all(Radius.circular(16.0)),
+                child: Image.network(
+                  headers: const {'Accept': '*/*'},
+                  article.featuredMediaUrl,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    article.title,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }

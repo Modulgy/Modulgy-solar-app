@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moduluenergy/main.dart';
 import 'package:moduluenergy/src/network/api_provider.dart';
 import 'package:moduluenergy/src/network/models.dart';
+import 'package:moduluenergy/src/network/modulgy_article_service.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 import 'package:moduluenergy/src/utils/user_preferences.dart';
 import 'package:moduluenergy/src/views/auth/login_components.dart';
@@ -28,43 +29,45 @@ class HomeScreen extends StatelessWidget {
 }
 
 Widget BodyWidget(BuildContext context) {
-  return RefreshIndicator(child: SingleChildScrollView(
+  return RefreshIndicator(
+      child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
+          child: Column(mainAxisSize: MainAxisSize.max, children: [
             headerSection(context),
-            FutureBuilder(
-                future: getEnergyForLastWeek(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return Expanded(
-                          child: Container(
-                              margin: const EdgeInsets.all(16),
-                              child: Text("Error: ${snapshot.error}")));
-                    } else {
-                      if (snapshot.data is Success) {
-                        return dataSection(
-                            (snapshot.data as Success<List<EnergyProduced>>)
-                                .data);
-                      } else {
-                        return Expanded(
-                            child: Container(
-                                margin: const EdgeInsets.all(16),
-                                child: Text(
-                                    "Error: ${(snapshot.data as Error).errorMessage}")));
-                      }
-                    }
-                  } else {
-                    return Center(
-                        child:
-                            const CircularProgressIndicator().marginOnly(top: 250));
-                  }
-                })
+            graphAndCardsSection(),
+            articlesSection(context),
           ])),
       onRefresh: () async {
-        await getEnergyForLastWeek();
+        await getEnergyFromLastWeek();
+      });
+}
+
+Widget graphAndCardsSection() {
+  return FutureBuilder(
+      future: getEnergyFromLastWeek(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Expanded(
+                child: Container(
+                    margin: const EdgeInsets.all(16),
+                    child: Text("Error: ${snapshot.error}")));
+          } else {
+            if (snapshot.data is Success) {
+              return dataSection(
+                  (snapshot.data as Success<List<EnergyProduced>>).data);
+            } else {
+              return Expanded(
+                  child: Container(
+                      margin: const EdgeInsets.all(16),
+                      child: Text(
+                          "Error: ${(snapshot.data as Error).errorMessage}")));
+            }
+          }
+        } else {
+          return Center(
+              child: const CircularProgressIndicator().marginOnly(top: 250));
+        }
       });
 }
 
@@ -84,7 +87,8 @@ Widget headerSection(BuildContext context) {
       child: Row(children: [
         Expanded(
           flex: 6,
-          child: WelcomeHeader(Localized.of(context).welcome_text, Localized.of(context).app_introduction,
+          child: WelcomeHeader(Localized.of(context).welcome_text,
+                  Localized.of(context).app_introduction,
                   headerStyle: AppStyles.dashboardHeadingStyle,
                   descriptionStyle: AppStyles.dashboardDescriptionStyle)
               .marginAll(16),
@@ -103,10 +107,10 @@ Widget headerSection(BuildContext context) {
         Flexible(
             child: IconButton(
                 onPressed: () => {
-                  UserPreferences().clearData(),
-                  Navigator.popAndPushNamed(
-                      context, ModulgyRoute.login.getRoute())
-                },
+                      UserPreferences().clearData(),
+                      Navigator.popAndPushNamed(
+                          context, ModulgyRoute.login.getRoute())
+                    },
                 icon: Icon(
                   Icons.logout,
                   size: 32,
@@ -124,8 +128,10 @@ Widget graphSection(List<EnergyProduced> energyProduced) {
         Row(children: [
           Expanded(
               child: Text(Localized.current.energy_produced,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-          Text(Localized.current.weekly_text, style: const TextStyle(fontSize: 12, color: Colors.grey))
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold))),
+          Text(Localized.current.weekly_text,
+              style: const TextStyle(fontSize: 12, color: Colors.grey))
         ]),
         EnergyChart(energyProduced),
       ],
@@ -171,29 +177,82 @@ Widget cardsSection(List<EnergyProduced> energyProduced) {
   );
 }
 
-Future<Result> getEnergyForLastWeek() async {
-  await ModulgyApiProvider.instance.initAuthenticatedApiService();
+Widget articlesSection(BuildContext context) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    color: Colors.white,
+    padding: const EdgeInsets.all(16),
+    child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: Text(
+          Localized.current.total_energy,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ),
+      FutureBuilder<List<Article>>(
+        future: getLatestArticles(),
+        // Replace with your API call to fetch the list of articles
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator()); // Show a loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Text(
+                'Error: ${snapshot.error}'); // Show an error message if data fetching fails
+          } else if (!snapshot.hasData) {
+            return const Text(
+                'No Articles'); // Show a message if there is no data
+          } else {
+            final articles = snapshot.data ?? [];
 
-  // Prepare the dates
-  DateTime now = DateTime.now();
-  DateTime sevenDaysAgo = now.subtract(const Duration(days: 7));
+            return Container(
+                height: 300,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: articles.length,
+                  itemBuilder: (context, index) {
+                    final article = articles[index];
+                    return ArticleWidget(article: article);
+                  },
+                ));
+          }
+        },
+      ),
+    ]),
+  );
+}
+
+Future<List<Article>> getLatestArticles() async {
+  var wordpressService = ModulgyApiProvider.instance.getWordpressService();
+  return await wordpressService.getRecentArticles();
+}
+
+Future<Result> getEnergyData(EnergyTimeVisualization visualization, DateTime fromDate, DateTime toDate) async {
+  await ModulgyApiProvider.instance.initAuthenticatedApiService();
 
   // Format the dates
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-  String from = dateFormat.format(sevenDaysAgo);
-  String to = dateFormat.format(now);
+  String from = dateFormat.format(fromDate);
+  String to = dateFormat.format(toDate);
 
   String errorMessage = "";
 
   var energyResult = await ModulgyApiProvider.instance
       .getAPIService()
-      .getMyEnergyProduction(EnergyTimeVisualization.DAY.name, from, to)
+      .getMyEnergyProduction(visualization.name, from, to)
       .catchError((error) {
     switch (error.runtimeType) {
       case DioError:
         final dioError = error as DioError;
         final res = dioError.response;
-        errorMessage = Localized.current.error_operation(res?.statusMessage?.toString() ?? "", dioError.error?.toString() ?? "");
+        errorMessage = Localized.current.error_operation(
+            res?.statusMessage?.toString() ?? "",
+            dioError.error?.toString() ?? "");
         debugPrint(errorMessage);
         return null;
       default:
@@ -204,8 +263,33 @@ Future<Result> getEnergyForLastWeek() async {
   if (energyResult == null) {
     return Error(errorMessage);
   } else {
+    debugPrint(energyResult.energyProduced.map((e) => e.energyProduced.toString()).join(","));
     return Success(energyResult.energyProduced);
   }
+}
+
+Future<Result> getEnergyFromLastWeek() async {
+  DateTime now = DateTime.now();
+  DateTime sevenDaysAgo = now.subtract(const Duration(days: 7));
+  return getEnergyData(EnergyTimeVisualization.DAY, sevenDaysAgo, now);
+}
+
+Future<Result> getEnergyFromLastMonth() async {
+  DateTime now = DateTime.now();
+  DateTime thirtyDaysAgo = now.subtract(const Duration(days: 30));
+  return getEnergyData(EnergyTimeVisualization.DAY, thirtyDaysAgo, now);
+}
+
+Future<Result> getEnergyFromLastYear() async {
+  DateTime now = DateTime.now();
+  DateTime oneYearAgo = now.subtract(const Duration(days: 365));
+  return getEnergyData(EnergyTimeVisualization.MONTH, oneYearAgo, now);
+}
+
+Future<Result> getEnergyForToday() async {
+  DateTime now = DateTime.now();
+  DateTime oneDayAgo = now.subtract(const Duration(days: 1));
+  return getEnergyData(EnergyTimeVisualization.HOUR, oneDayAgo, now);
 }
 
 enum EnergyTimeVisualization { HOUR, DAY, MONTH }
