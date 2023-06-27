@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moduluenergy/generated/l10n.dart';
+import 'package:moduluenergy/src/views/chart/chart_utils.dart';
 
 import '../../network/models.dart';
 import '../../utils/app_colors.dart';
 
 class ProductionItem extends StatelessWidget {
   EnergyProduced energyProduced;
+  bool isInKWh;
 
-  ProductionItem({super.key, required this.energyProduced});
+  ProductionItem(
+      {super.key, required this.energyProduced, required this.isInKWh});
 
   final DateFormat _dateFormat = DateFormat('EEEE d');
   final DateFormat _incomingDateFormat = DateFormat('yyyy-MM-dd');
@@ -31,20 +34,21 @@ class ProductionItem extends StatelessWidget {
             ),
           ),
 
-          // Right most side: Value label + "Wh" label
           Row(
             children: [
               Text(
-                (energyProduced.energyProduced * 1000).toStringAsFixed(0),
+                isInKWh
+                    ? energyProduced.energyProduced.toStringAsFixed(0)
+                    : (energyProduced.energyProduced * 1000).toStringAsFixed(0),
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(width: 5),
-              const Text(
-                "Wh",
-                style: TextStyle(
+              Text(
+                isInKWh ? "KWh" : "Wh",
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -58,7 +62,7 @@ class ProductionItem extends StatelessWidget {
 }
 
 class PeriodSelector extends StatefulWidget {
-  final Function(String) onPeriodSelected;
+  final Function(int) onPeriodSelected;
 
   const PeriodSelector({Key? key, required this.onPeriodSelected})
       : super(key: key);
@@ -68,7 +72,7 @@ class PeriodSelector extends StatefulWidget {
 }
 
 class _PeriodSelectorState extends State<PeriodSelector> {
-  String _selectedPeriod = 'Day';
+  String _selectedPeriod = Localized.current.day;
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +84,17 @@ class _PeriodSelectorState extends State<PeriodSelector> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: ['Day', 'Week', 'Month', 'Year'].map((period) {
+        children: [
+          Localized.of(context).day,
+          Localized.of(context).week,
+          Localized.of(context).month,
+          Localized.of(context).year
+        ].mapIndexed((index, period) {
           return GestureDetector(
             onTap: () {
               setState(() {
                 _selectedPeriod = period;
-                widget.onPeriodSelected(period);
+                widget.onPeriodSelected(index);
               });
             },
             child: Column(

@@ -1,13 +1,18 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../network/models.dart';
+import '../chart/chart_utils.dart';
+import '../production/bar_chart_view.dart';
 
 class EnergyChart extends StatefulWidget {
-  EnergyChart(this.energyProduced, {super.key});
+  EnergyChart(this.energyProduced, this.selectedTimeMode, {super.key});
 
   List<EnergyProduced> energyProduced;
+  TimeMode selectedTimeMode;
 
   @override
   State<EnergyChart> createState() => _EnergyChartState();
@@ -21,7 +26,6 @@ class _EnergyChartState extends State<EnergyChart> {
 
   var mode = TimeMode.WEEKLY;
   static const int TENTHS_CONSTANT = 10;
-  static const int HUNDREDTHS_CONSTANT = 100;
 
   bool showAvg = false;
 
@@ -47,116 +51,55 @@ class _EnergyChartState extends State<EnergyChart> {
     );
   }
 
-  Widget weeklyTitleWidgets(double value, TitleMeta meta) {
-    debugPrint("value: $value");
-    const style = TextStyle(
-      color: Color(0xff979797),
-      fontSize: 12,
-    );
-
-    final weekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-    final intValue = value ~/ 1.5;
-    final parsedIntValue = intValue > 7 ? intValue - 7 : intValue;
-    Widget text;
-
-    if (parsedIntValue >= 1 && parsedIntValue <= weekdays.length) {
-      text = Text(weekdays[parsedIntValue - 1], style: style);
-    } else {
-      text = const Text('', style: style);
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget monthlyTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff979797),
-      fontSize: 12,
-    );
-
-    final months = [
-      'JAN',
-      'FEB',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUN',
-      'JUL',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC'
-    ];
-    final intValue = value.toInt();
-    Widget text;
-
-    if (intValue >= 1 && intValue <= months.length) {
-      text = Text(months[intValue - 1], style: style);
-    } else {
-      text = const Text('', style: style);
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff979797),
-      fontSize: 12,
-    );
-
-    String text = value % TENTHS_CONSTANT != 0 ? "" : "${value.toInt()}Wh";
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
-
   LineChartData mainData(List<EnergyProduced> energyProduced) {
-    debugPrint("energyProduced: $energyProduced");
-    var whEnergyProduced = energyProduced
-        .map((e) => EnergyProduced(
-            energyProduced: e.energyProduced * 1000, date: e.date))
+    var parsedProducedEnergy = parseEnergyInWhOrKWh(energyProduced)
         .toList();
-    var maxEnergyEntry = whEnergyProduced
+    var maxEnergyEntry = parsedProducedEnergy
         .reduce((curr, next) =>
-            curr.energyProduced > next.energyProduced ? curr : next)
+    curr.energyProduced > next.energyProduced ? curr : next)
         .energyProduced;
-    var dateEntries =
-        whEnergyProduced.map((e) => getDayOfWeek(e.date)).toList();
-    debugPrint("dateEntries: $dateEntries");
-    var indexOfBiggestDay = dateEntries.indexOf(7);
-    debugPrint("indexOfBiggestDay: $indexOfBiggestDay");
 
-    List<double> resultDateEntries = [];
-    if (indexOfBiggestDay != dateEntries.length - 1) {
-      var sublistBiggerThan7 =
-          dateEntries.sublist(indexOfBiggestDay + 1).map((e) => e + 7).toList();
-      debugPrint("sublistBiggerThan7: $sublistBiggerThan7");
-      resultDateEntries =
-          (dateEntries.sublist(0, indexOfBiggestDay) + [7] + sublistBiggerThan7)
-              .map((e) => e * 1.5)
-              .toList();
+    List<int> resultDateEntries = [];
+    switch (widget.selectedTimeMode) {
+      case TimeMode.WEEKLY:
+        resultDateEntries = parseWeeklyDate(parsedProducedEnergy);
+        break;
+      case TimeMode.HOURLY:
+        resultDateEntries = parseDailyDate(parsedProducedEnergy);
+        break;
+      case TimeMode.MONTHLY:
+        resultDateEntries = parseMonthlyDate(parsedProducedEnergy);
+        break;
     }
 
-    debugPrint(resultDateEntries.toString());
-    var isEmptyEnergy = whEnergyProduced
-    .map((e) => e.energyProduced)
-    .toList()
-    .every((element) => element == 0);
+    debugPrint("resultDateEntries: ${resultDateEntries.toString()}");
+    var isEmptyEnergy = parsedProducedEnergy
+        .map((e) => e.energyProduced)
+        .toList()
+        .every((element) => element == 0);
 
     //Let's put the energy in Wh
-    var flSpotEnergyProduced = whEnergyProduced
+    var flSpotEnergyProduced = parsedProducedEnergy
         .mapIndexed((index, energy) =>
-            FlSpot(resultDateEntries[index].toDouble(), energy.energyProduced))
+        FlSpot(resultDateEntries[index].toDouble(), energy.energyProduced))
         .toList();
     debugPrint("maxEnergyEntry: $maxEnergyEntry");
     debugPrint("flSpotEnergyProduced: $flSpotEnergyProduced");
+
+    var titleWidgets = monthlyTitleWidgets;
+    switch (widget.selectedTimeMode) {
+      case TimeMode.WEEKLY:
+        titleWidgets = weeklyTitleWidgets;
+        break;
+      case TimeMode.HOURLY:
+        titleWidgets = dailyTitleWidgets;
+        break;
+      case TimeMode.MONTHLY:
+        titleWidgets = energyProduced.length > 13
+            ? daysOfMonthTitleWidgets
+            : monthlyTitleWidgets;
+        break;
+    }
 
     return LineChartData(
       gridData: FlGridData(
@@ -190,9 +133,7 @@ class _EnergyChartState extends State<EnergyChart> {
             showTitles: true,
             reservedSize: 24,
             interval: 1.5,
-            getTitlesWidget: mode == TimeMode.WEEKLY
-                ? weeklyTitleWidgets
-                : monthlyTitleWidgets,
+            getTitlesWidget: titleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
@@ -208,10 +149,10 @@ class _EnergyChartState extends State<EnergyChart> {
           show: false,
           border: null //Border.all(color: const Color(0xff37434d)),
           ),
-      minX: findMinimum(resultDateEntries),
-      maxX: findMaximum(resultDateEntries),
+      minX: findMinimum(resultDateEntries.map((e) => e.toDouble()).toList()),
+      maxX: findMaximum(resultDateEntries.map((e) => e.toDouble()).toList()),
       minY: isEmptyEnergy ? 0 : -5,
-      maxY: maxEnergyEntry,
+      maxY: max(maxEnergyEntry, 20),
       lineBarsData: [
         LineChartBarData(
           spots: flSpotEnergyProduced,
@@ -244,13 +185,6 @@ int getDayOfWeek(String dateString) {
   return date.weekday;
 }
 
-extension IterableExtension<T> on Iterable<T> {
-  Iterable<R> mapIndexed<R>(R Function(int index, T element) f) {
-    var index = 0;
-    return map((element) => f(index++, element));
-  }
-}
-
 double findMinimum(List<double> list) {
   if (list.isEmpty) {
     throw Exception('The list is empty.');
@@ -266,6 +200,3 @@ double findMaximum (List<double> list) {
 
   return list.reduce((current, next) => current.compareTo(next) > 0 ? current : next);
 }
-
-
-enum TimeMode { WEEKLY, MONTHLY }

@@ -3,8 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
-
-
 @JsonSerializable()
 class EnergyProductionResponseBody {
   final List<EnergyProduced> energyProduced;
@@ -174,6 +172,18 @@ class ActivateRequestBody {
 }
 
 @JsonSerializable()
+class ResendCodeBody {
+  final String email;
+
+  ResendCodeBody({required this.email});
+
+  factory ResendCodeBody.fromJson(Map<String, dynamic> json) =>
+      _$ResendCodeBodyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResendCodeBodyToJson(this);
+}
+
+@JsonSerializable()
 class PasswordResetRequestBody {
   final String email;
 
@@ -259,7 +269,9 @@ class Article {
     required this.featuredMediaUrl,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
+  factory Article.fromJson(Map<String, dynamic> json) =>
+      _$ArticleFromJson(json);
+
   Map<String, dynamic> toJson() => _$ArticleToJson(this);
 
   static String _featuredMediaFromJson(dynamic value) {
@@ -272,4 +284,3 @@ class Article {
     throw UnimplementedError();
   }
 }
-

@@ -35,10 +35,25 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activate_button": MessageLookupByLibrary.simpleMessage("Activate"),
+        "activation_code_hint":
+            MessageLookupByLibrary.simpleMessage("Activation Code"),
+        "activation_code_label":
+            MessageLookupByLibrary.simpleMessage("Activation Code"),
+        "activation_code_resent":
+            MessageLookupByLibrary.simpleMessage("Activation Code Resent!"),
+        "activation_code_send_error": MessageLookupByLibrary.simpleMessage(
+            "Error sending Activation Code."),
         "app_introduction": MessageLookupByLibrary.simpleMessage(
             "Let\'s manage your smart solar"),
+        "articles_header":
+            MessageLookupByLibrary.simpleMessage("Read the Articles"),
+        "back_to_login": MessageLookupByLibrary.simpleMessage("Back to Login"),
         "capacity": MessageLookupByLibrary.simpleMessage("Capacity"),
         "co2_reduction": MessageLookupByLibrary.simpleMessage("CO2 Reduction"),
+        "confirm_new_password_hint":
+            MessageLookupByLibrary.simpleMessage("Confirm New Password"),
+        "confirm_new_password_label":
+            MessageLookupByLibrary.simpleMessage("Confirm New Password"),
         "connect_button": MessageLookupByLibrary.simpleMessage("Connect"),
         "connect_text": MessageLookupByLibrary.simpleMessage("Connect"),
         "connect_to_device":
@@ -105,6 +120,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "mqtt_parameters_configuration_error": m3,
         "network_name_label":
             MessageLookupByLibrary.simpleMessage("Network Name (SSID)"),
+        "new_password_hint":
+            MessageLookupByLibrary.simpleMessage("New Password"),
+        "new_password_label":
+            MessageLookupByLibrary.simpleMessage("New Password"),
         "no_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have account?"),
         "no_code":
@@ -116,9 +135,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "password_hint": MessageLookupByLibrary.simpleMessage("Password here"),
         "password_label":
             MessageLookupByLibrary.simpleMessage("Type your password"),
+        "password_mismatch_error":
+            MessageLookupByLibrary.simpleMessage("Passwords do not match"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Press the power button to start the pairing mode."),
+        "production": MessageLookupByLibrary.simpleMessage("Production"),
+        "remember_password":
+            MessageLookupByLibrary.simpleMessage("Remember your password?"),
         "resend_text": MessageLookupByLibrary.simpleMessage("Resend"),
+        "reset_password": MessageLookupByLibrary.simpleMessage(
+            "Check your email for an activation code and type your new password here."),
+        "reset_password_button":
+            MessageLookupByLibrary.simpleMessage("Reset Password"),
         "save_button": MessageLookupByLibrary.simpleMessage("Save"),
         "scan_start_error":
             MessageLookupByLibrary.simpleMessage("Failed to start scan"),
@@ -130,7 +158,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup_text": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "solar_energy_produced":
             MessageLookupByLibrary.simpleMessage("Solar Energy Produced"),
+        "this_month": MessageLookupByLibrary.simpleMessage("This Month"),
         "this_week": MessageLookupByLibrary.simpleMessage("This Week"),
+        "this_year": MessageLookupByLibrary.simpleMessage("This Year"),
+        "today": MessageLookupByLibrary.simpleMessage("Today"),
         "total_energy": MessageLookupByLibrary.simpleMessage("Total Energy"),
         "total_production_per_day":
             MessageLookupByLibrary.simpleMessage("Total Production Per Day"),
@@ -144,6 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "valid_code_error": MessageLookupByLibrary.simpleMessage(
             "Please enter a valid 6 digit code"),
         "verify_code": MessageLookupByLibrary.simpleMessage("Verify Code"),
+        "week": MessageLookupByLibrary.simpleMessage("Week"),
         "weekly_text": MessageLookupByLibrary.simpleMessage("Weekly"),
         "welcome_back": MessageLookupByLibrary.simpleMessage("Welcome Back!"),
         "welcome_text": MessageLookupByLibrary.simpleMessage("Welcome 👋"),

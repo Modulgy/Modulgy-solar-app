@@ -10,19 +10,30 @@ import 'package:moduluenergy/src/views/production/production_widgets.dart';
 import '../../network/models.dart';
 import '../../network/result.dart';
 import '../../utils/app_colors.dart';
+import '../chart/chart_utils.dart';
 
 class ProductionScreen extends StatefulWidget {
   @override
   _ProductionScreenState createState() => _ProductionScreenState();
 
   static var co2ReductionConstant = 0.384;
+  static const CONST_DAY_INDEX = 0;
+  static const CONST_WEEK_INDEX = 1;
+  static const CONST_MONTH_INDEX = 2;
+  static const CONST_YEAR_INDEX = 3;
 }
 
 class _ProductionScreenState extends State<ProductionScreen> {
-  String _selectedPeriod = 'Day';
+  int _selectedPeriodIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    List<String> periodsList = [
+      Localized.of(context).day,
+      Localized.of(context).week,
+      Localized.of(context).month,
+      Localized.of(context).year
+    ];
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
@@ -31,32 +42,36 @@ class _ProductionScreenState extends State<ProductionScreen> {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Section 0: Header title "Production"
-                const Padding(
-                  padding: EdgeInsets.only(top: 60, bottom: 20),
+                 Padding(
+                  padding: const EdgeInsets.only(top: 60, bottom: 20, left: 12),
                   child: Text(
-                    "Production",
-                    style: TextStyle(
+                    Localized.of(context).production,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                 ),
-                PeriodSelector(
-                  onPeriodSelected: (period) {
-                    setState(() {
-                      _selectedPeriod = period;
-                    });
-                  },
-                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: PeriodSelector(
+                      onPeriodSelected: (period) {
+                        setState(() {
+                          _selectedPeriodIndex = period;
+                        });
+                      },
+                    )),
                 // Section 1: Graph (placeholder, needs to be implemented)
-                energyDataSectionPerPeriod(context, _selectedPeriod),
-                productionPerDaySection(context)
+                energyDataSectionPerPeriod(context, _selectedPeriodIndex),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: productionPerDaySection(context))
               ],
             ),
           ),
@@ -66,13 +81,14 @@ class _ProductionScreenState extends State<ProductionScreen> {
   }
 }
 
-Widget energyDataSectionPerPeriod(BuildContext context, String selectedPeriod) {
+Widget energyDataSectionPerPeriod(BuildContext context, int selectedPeriod) {
   return FutureBuilder(
       future: getEnergyForPeriod(selectedPeriod),
       builder: (context, snapshot) {
-        List<EnergyProduced> energyProduced = snapshot.hasData
-            ? (snapshot.data as Success<List<EnergyProduced>>).data
-            : [];
+        List<EnergyProduced> energyProduced =
+            snapshot.hasData && !snapshot.hasError
+                ? (snapshot.data as Success<List<EnergyProduced>>).data ?? []
+                : [];
         ProductionLoadingState loadingState = snapshot.hasData &&
                 snapshot.connectionState != ConnectionState.waiting
             ? ProductionLoadingState.loaded
@@ -80,9 +96,9 @@ Widget energyDataSectionPerPeriod(BuildContext context, String selectedPeriod) {
                 ? ProductionLoadingState.error
                 : ProductionLoadingState.loading;
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          getGraphForLoadingState(loadingState, energyProduced),
+          getGraphForLoadingState(loadingState, selectedPeriod, energyProduced),
           Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20),
             child: Text(
               Localized.of(context).total_energy,
               style: const TextStyle(
@@ -91,41 +107,18 @@ Widget energyDataSectionPerPeriod(BuildContext context, String selectedPeriod) {
               ),
             ),
           ),
-          getCardsForLoadingState(context, loadingState, energyProduced)
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: getCardsForLoadingState(
+                  context, loadingState, energyProduced))
         ]);
       });
-}
-
-Widget mainProductionSection(BuildContext context, bool hasData, bool hasError,
-    List<EnergyProduced> energyProduced) {
-  return Column(
-    children: [
-      !hasData
-          ? const SizedBox(
-              height: 200, child: Center(child: CircularProgressIndicator()))
-          : productionBarChart(energyProduced, TimeMode.WEEKLY),
-      Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
-        child: Text(
-          Localized.of(context).total_energy,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-      ),
-      hasData
-          ? cardsSection(context, energyProduced)
-          : const SizedBox(
-              height: 200, child: Center(child: CircularProgressIndicator()))
-    ],
-  );
 }
 
 Widget productionBarChart(
     List<EnergyProduced> energyProduced, TimeMode selectedTimeMode) {
   return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
       child: ProductionBarChart(energyProduced, selectedTimeMode));
 }
 
@@ -138,7 +131,7 @@ Widget cardsSection(BuildContext context, List<EnergyProduced> energyProduced) {
     padding: const EdgeInsets.only(top: 10, bottom: 10),
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
-    childAspectRatio: 1.7,
+    childAspectRatio: 1.6,
     crossAxisCount: 2,
     children: [
       DashboardCard(
@@ -150,24 +143,6 @@ Widget cardsSection(BuildContext context, List<EnergyProduced> energyProduced) {
         dataValueTextSize: 20,
         hasElevation: false,
       ),
-      /*DashboardCard(
-                      title: Localized.of(context).consumption,
-                      dataValue: "50 kWh",
-                      backgroundColor: AppColors.surfaceLightGray,
-                      labelTextColor: AppColors.onSurfaceGray,
-                      dataValueTextColor: Colors.black,
-                      dataValueTextSize: 20,
-                      hasElevation: false,
-                    ),*/
-      /*DashboardCard(
-                      title: Localized.of(context).capacity,
-                      dataValue: "75 kWh",
-                      backgroundColor: AppColors.surfaceLightGray,
-                      labelTextColor: AppColors.onSurfaceGray,
-                      dataValueTextColor: Colors.black,
-                      dataValueTextSize: 20,
-                      hasElevation: false,
-                    ),*/
       DashboardCard(
         title: Localized.of(context).co2_reduction,
         dataValue:
@@ -183,7 +158,9 @@ Widget cardsSection(BuildContext context, List<EnergyProduced> energyProduced) {
 }
 
 Widget productionPerDaySection(BuildContext context) {
-  return Column(children: [
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
     Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Text(
@@ -210,7 +187,7 @@ Widget productionPerDaySection(BuildContext context) {
                   // Dummy count for the example
                   itemBuilder: (BuildContext context, int index) {
                     return ProductionItem(
-                      energyProduced: energyProducedResult[index],
+                      energyProduced: energyProducedResult[index], isInKWh: shouldBeKWhUnit(energyProducedResult),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
@@ -230,8 +207,8 @@ Widget productionPerDaySection(BuildContext context) {
   ]);
 }
 
-Widget getGraphForLoadingState(
-    ProductionLoadingState loadingState, List<EnergyProduced> energyProduced) {
+Widget getGraphForLoadingState(ProductionLoadingState loadingState,
+    int selectedPeriod, List<EnergyProduced> energyProduced) {
   switch (loadingState) {
     case ProductionLoadingState.loading:
       return const SizedBox(
@@ -243,7 +220,10 @@ Widget getGraphForLoadingState(
       return const Text(
           'Error retrieving energy data'); // Show a message if there is no data
     case ProductionLoadingState.loaded:
-      return productionBarChart(energyProduced, TimeMode.WEEKLY); // Show a message if there is no data
+      return productionBarChart(
+          energyProduced,
+          getTimeModeForSelectedPeriod(
+              selectedPeriod)); // Show a message if there is no data
     default:
       return const SizedBox(
           height: 200,
@@ -277,18 +257,34 @@ Widget getCardsForLoadingState(BuildContext context,
   }
 }
 
-Future<Result> getEnergyForPeriod(String period) {
+Future<Result> getEnergyForPeriod(int period) {
   switch (period) {
-    case 'Day':
+    case ProductionScreen.CONST_DAY_INDEX:
       return getEnergyForToday();
-    case 'Week':
+    case ProductionScreen.CONST_WEEK_INDEX:
       return getEnergyFromLastWeek();
-    case 'Month':
+    case ProductionScreen.CONST_MONTH_INDEX:
       return getEnergyFromLastMonth();
-    case 'Year':
+    case ProductionScreen.CONST_YEAR_INDEX:
       return getEnergyFromLastYear();
     default:
       return getEnergyFromLastWeek();
+  }
+}
+
+TimeMode getTimeModeForSelectedPeriod(int selectedPeriod) {
+  debugPrint("Selected period: $selectedPeriod");
+  switch (selectedPeriod) {
+    case ProductionScreen.CONST_DAY_INDEX:
+      return TimeMode.HOURLY;
+    case ProductionScreen.CONST_WEEK_INDEX:
+      return TimeMode.WEEKLY;
+    case ProductionScreen.CONST_MONTH_INDEX:
+      return TimeMode.MONTHLY;
+    case ProductionScreen.CONST_YEAR_INDEX:
+      return TimeMode.MONTHLY;
+    default:
+      return TimeMode.WEEKLY;
   }
 }
 

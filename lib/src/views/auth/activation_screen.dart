@@ -29,19 +29,22 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     _arguments = ModalRoute.of(context)?.settings.arguments as AuthRequest;
     return Scaffold(
       body: GlobalMarginWrapper(
         child: Form(
           key: _formKey,
-          child: BodyWidget(),
+          child: BodyWidget(auth),
         ),
       ),
     );
   }
 
-  Widget BodyWidget() {
+  Widget BodyWidget(AuthProvider auth) {
     AuthProvider auth = Provider.of<AuthProvider>(context);
+    final email = _arguments?.email ?? "";
+    final password = _arguments?.password ?? "";
     return Column(
       children: [
         WelcomeHeader(Localized.of(context).verify_code,
@@ -50,29 +53,40 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
         ActivationCodeField(controller: _activationCodeController)
             .marginBottom(20),
         ModulgyButton(
-                title: Localized.of(context).activate_button,
-                buttonState: getButtonState(auth.registeredInStatus),
-                onPressed: onActivationCodePressed)
-            .marginOnly(bottom: 30),
+            title: Localized.of(context).activate_button,
+            buttonState: getButtonState(auth.registeredInStatus),
+            onPressed: () {
+              onActivationCodePressed(auth, email, password);
+            }).marginOnly(bottom: 30),
         AuthBottom(
           text1: Localized.of(context).no_code,
           text2: Localized.of(context).resend_text,
-          onRedirectPressed: () => {
-            /* resend code logic goes here */
-          },
+          onRedirectPressed: () => {onCodeResend(context, auth, email)},
         )
       ],
     );
   }
 
-  void onActivationCodePressed() {
+  void onCodeResend(BuildContext context, AuthProvider auth, String email) {
+    String snackbarMessage = "";
+    auth.resendActivationCode(email).then((result) {
+      snackbarMessage = (result is Success)
+          ? Localized.of(context).activation_code_resent
+          : Localized.of(context).activation_code_send_error;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(snackbarMessage),
+        ),
+      );
+    });
+  }
+
+  void onActivationCodePressed(
+      AuthProvider auth, String email, String password) {
     final form = _formKey.currentState;
-    final email = _arguments?.email ?? "";
-    final password = _arguments?.password ?? "";
     debugPrint("form: $form");
     if (_activationCodeController.text.length == 6) {
       _activationCode = _activationCodeController.text;
-      AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
       auth.activate(email, password, _activationCode).then((result) {
         if (result is Success) {
           Navigator.pushNamedAndRemoveUntil(context,
@@ -87,7 +101,7 @@ class _ActivationCodeScreenState extends State<ActivationCodeScreen> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
+        SnackBar(
           content: Text(Localized.of(context).valid_code_error),
         ),
       );

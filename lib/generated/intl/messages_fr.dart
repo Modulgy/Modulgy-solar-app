@@ -37,11 +37,26 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activate_button": MessageLookupByLibrary.simpleMessage("Activer"),
+        "activation_code_hint":
+            MessageLookupByLibrary.simpleMessage("Code d\'activation"),
+        "activation_code_label":
+            MessageLookupByLibrary.simpleMessage("Code d\'activation"),
+        "activation_code_resent":
+            MessageLookupByLibrary.simpleMessage("Code d\'activation renvoyé!"),
+        "activation_code_send_error": MessageLookupByLibrary.simpleMessage(
+            "Erreur lors de la renvoi du code d\'activation."),
         "app_introduction": MessageLookupByLibrary.simpleMessage(
             "Gérons votre solaire intelligent"),
+        "articles_header":
+            MessageLookupByLibrary.simpleMessage("Lire les articles"),
+        "back_to_login":
+            MessageLookupByLibrary.simpleMessage("Retour à la connexion"),
         "capacity": MessageLookupByLibrary.simpleMessage("Capacité"),
-        "co2_reduction":
-            MessageLookupByLibrary.simpleMessage("Réduction de CO2"),
+        "co2_reduction": MessageLookupByLibrary.simpleMessage("CO2 Réduction"),
+        "confirm_new_password_hint": MessageLookupByLibrary.simpleMessage(
+            "Confirmer le nouveau mot de passe"),
+        "confirm_new_password_label": MessageLookupByLibrary.simpleMessage(
+            "Confirmer le nouveau mot de passe"),
         "connect_button": MessageLookupByLibrary.simpleMessage("Se connecter"),
         "connect_text": MessageLookupByLibrary.simpleMessage("Connect"),
         "connect_to_device":
@@ -93,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez saisir le code que nous venons de vous envoyer à votre adresse électronique"),
         "error_can_toString": m1,
         "error_operation": m2,
+        "forgot_password":
+            MessageLookupByLibrary.simpleMessage("Mot de passe oublié"),
         "invalid_email_or_password_error": MessageLookupByLibrary.simpleMessage(
             "Courriel ou mot de passe non valide. (401)"),
         "invalid_email_or_password_error_422":
@@ -106,6 +123,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "mqtt_parameters_configuration_error": m3,
         "network_name_label":
             MessageLookupByLibrary.simpleMessage("Nom du réseau (SSID)"),
+        "new_password_hint":
+            MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
+        "new_password_label":
+            MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
         "no_account": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez pas de compte ?"),
         "no_code": MessageLookupByLibrary.simpleMessage(
@@ -118,9 +139,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mot de passe ici"),
         "password_label":
             MessageLookupByLibrary.simpleMessage("Tapez votre mot de passe"),
+        "password_mismatch_error": MessageLookupByLibrary.simpleMessage(
+            "Les mots de passe ne correspondent pas"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Appuyer sur le bouton d\'alimentation pour lancer le mode d\'appairage"),
+        "production": MessageLookupByLibrary.simpleMessage("Production"),
+        "remember_password": MessageLookupByLibrary.simpleMessage(
+            "Vous souvenez-vous de votre mot de passe ?"),
         "resend_text": MessageLookupByLibrary.simpleMessage("Renvoyer"),
+        "reset_password": MessageLookupByLibrary.simpleMessage(
+            "Vérifiez votre e-mail pour obtenir un code d\'activation et saisissez votre nouveau mot de passe ici."),
+        "reset_password_button": MessageLookupByLibrary.simpleMessage(
+            "Réinitialiser le mot de passe"),
         "save_button": MessageLookupByLibrary.simpleMessage("Save"),
         "scan_start_error": MessageLookupByLibrary.simpleMessage(
             "Échec du démarrage de l\'analyse"),
@@ -132,7 +162,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup_text": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
         "solar_energy_produced":
             MessageLookupByLibrary.simpleMessage("Énergie solaire produite"),
+        "this_month": MessageLookupByLibrary.simpleMessage("Ce mois-ci"),
         "this_week": MessageLookupByLibrary.simpleMessage("Cette semaine"),
+        "this_year": MessageLookupByLibrary.simpleMessage("Cette année"),
+        "today": MessageLookupByLibrary.simpleMessage("Aujourd\'hui"),
         "total_energy": MessageLookupByLibrary.simpleMessage("Énergie totale"),
         "total_production_per_day":
             MessageLookupByLibrary.simpleMessage("Production totale par jour"),
@@ -147,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "valid_code_error": MessageLookupByLibrary.simpleMessage(
             "Veuillez saisir un code valide à 6 chiffres"),
         "verify_code": MessageLookupByLibrary.simpleMessage("Vérifier le code"),
+        "week": MessageLookupByLibrary.simpleMessage("Semaine"),
         "weekly_text": MessageLookupByLibrary.simpleMessage("Hebdomadaire"),
         "welcome_back":
             MessageLookupByLibrary.simpleMessage("Bienvenue à nouveau !"),

@@ -680,6 +680,26 @@ class Localized {
     );
   }
 
+  /// `Activation Code Resent!`
+  String get activation_code_resent {
+    return Intl.message(
+      'Activation Code Resent!',
+      name: 'activation_code_resent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error sending Activation Code.`
+  String get activation_code_send_error {
+    return Intl.message(
+      'Error sending Activation Code.',
+      name: 'activation_code_send_error',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Electricity\nCost`
   String get electricity_cost {
     return Intl.message(
@@ -695,6 +715,36 @@ class Localized {
     return Intl.message(
       'This Week',
       name: 'this_week',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Month`
+  String get this_month {
+    return Intl.message(
+      'This Month',
+      name: 'this_month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Year`
+  String get this_year {
+    return Intl.message(
+      'This Year',
+      name: 'this_year',
       desc: '',
       args: [],
     );
@@ -750,6 +800,116 @@ class Localized {
     );
   }
 
+  /// `Check your email for an activation code and type your new password here.`
+  String get reset_password {
+    return Intl.message(
+      'Check your email for an activation code and type your new password here.',
+      name: 'reset_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activation Code`
+  String get activation_code_hint {
+    return Intl.message(
+      'Activation Code',
+      name: 'activation_code_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activation Code`
+  String get activation_code_label {
+    return Intl.message(
+      'Activation Code',
+      name: 'activation_code_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get new_password_hint {
+    return Intl.message(
+      'New Password',
+      name: 'new_password_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get new_password_label {
+    return Intl.message(
+      'New Password',
+      name: 'new_password_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm New Password`
+  String get confirm_new_password_hint {
+    return Intl.message(
+      'Confirm New Password',
+      name: 'confirm_new_password_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm New Password`
+  String get confirm_new_password_label {
+    return Intl.message(
+      'Confirm New Password',
+      name: 'confirm_new_password_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get password_mismatch_error {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'password_mismatch_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get reset_password_button {
+    return Intl.message(
+      'Reset Password',
+      name: 'reset_password_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remember your password?`
+  String get remember_password {
+    return Intl.message(
+      'Remember your password?',
+      name: 'remember_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to Login`
+  String get back_to_login {
+    return Intl.message(
+      'Back to Login',
+      name: 'back_to_login',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Total Production Per Day`
   String get total_production_per_day {
     return Intl.message(
@@ -770,6 +930,16 @@ class Localized {
     );
   }
 
+  /// `Week`
+  String get week {
+    return Intl.message(
+      'Week',
+      name: 'week',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Year`
   String get year {
     return Intl.message(
@@ -785,6 +955,26 @@ class Localized {
     return Intl.message(
       'Day',
       name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Production`
+  String get production {
+    return Intl.message(
+      'Production',
+      name: 'production',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read the Articles`
+  String get articles_header {
+    return Intl.message(
+      'Read the Articles',
+      name: 'articles_header',
       desc: '',
       args: [],
     );

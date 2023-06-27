@@ -64,6 +64,22 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<Result> resendActivationCode(String email) async {
+    Result result = Success<bool>(true);
+
+    await ModulgyApiProvider.instance
+        .getAPIService()
+        .resendActivationCode(ResendCodeBody(email: email))
+        .catchError((Object obj) {
+      Error? error = onErrorHandler(obj, AuthOperationType.Activate);
+      if (error != null) {
+        result = error;
+      }
+    });
+
+    return result;
+  }
+
   Future<Result> register(String email, String password) async {
     _registeredInStatus = Status.Authenticating;
     notifyListeners();
@@ -151,7 +167,9 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         debugPrint("error: ${dioError.error}");
         debugPrint("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
-        errorMessage = Localized.current.error_operation(operationType ?? AuthOperationType.Login, res?.statusMessage ?? dioError.error?.toString() ?? "");
+        errorMessage = Localized.current.error_operation(
+            operationType ?? AuthOperationType.Login,
+            res?.statusMessage ?? dioError.error?.toString() ?? "");
         return Error(errorMessage, errorCode: res?.statusCode ?? -1);
       default:
         return null;

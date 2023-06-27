@@ -28,6 +28,9 @@ abstract class ModulgyApiService {
   @POST("/user/activate")
   Future<void> activateUser(@Body() ActivateRequestBody body);
 
+  @POST("/user/activationCode/resend")
+  Future<void> resendActivationCode(@Body() ResendCodeBody body);
+
   @POST("/user/password/reset")
   Future<void> resetPassword(@Body() PasswordResetRequestBody body);
 

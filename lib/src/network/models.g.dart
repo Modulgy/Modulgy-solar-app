@@ -136,6 +136,16 @@ Map<String, dynamic> _$ActivateRequestBodyToJson(
       'email': instance.email,
     };
 
+ResendCodeBody _$ResendCodeBodyFromJson(Map<String, dynamic> json) =>
+    ResendCodeBody(
+      email: json['email'] as String,
+    );
+
+Map<String, dynamic> _$ResendCodeBodyToJson(ResendCodeBody instance) =>
+    <String, dynamic>{
+      'email': instance.email,
+    };
+
 PasswordResetRequestBody _$PasswordResetRequestBodyFromJson(
         Map<String, dynamic> json) =>
     PasswordResetRequestBody(
@@ -185,13 +195,13 @@ Map<String, dynamic> _$AuthTokenToJson(AuthToken instance) => <String, dynamic>{
       'body': instance.body,
     };
 
-Article  _$ArticleFromJson(Map<String, dynamic> json) => Article(
+Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
       id: json['id'] as int,
       date: json['date'] as String,
       link: json['link'] as String,
-      title: json['title']['rendered'] as String,
+      title: json['title'] as String,
       featuredMediaUrl:
-          Article._featuredMediaFromJson(json['_embedded']['wp:featuredmedia']),
+          Article._featuredMediaFromJson(json['wp:featuredmedia']),
     );
 
 Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
