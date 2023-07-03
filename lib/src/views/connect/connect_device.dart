@@ -267,7 +267,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   void _mqttConnectionInternal(
       MokoConnectionProvider provider, String userUuid) async {
     var mqttParametersConfigurationResult =
-    await provider.configureMQTTParameters(userUuid);
+        await provider.configureMQTTParameters(userUuid);
     debugPrint(
         "MQTT Parameters configuration result is: $mqttParametersConfigurationResult");
 
@@ -275,34 +275,31 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
       //now we're going to ask the wifi credentials.
       showWifiDialog(
           context,
-              (ssid, password) =>
-          {
-            provider
-                .configureWifiInformation(ssid, password)
-                .then((wifiParametersConfigurationResult) =>
-            {
-              if (wifiParametersConfigurationResult is Success)
-                {
-                  //TODO redirect to dashboard!
-                  showSnackbarError(Localized
-                      .current.device_configuration_success),
-                }
-              else
-                {
-                  //TODO parameters
-                  //wifi_parameters_configuration_error
-                  showSnackbarError(Localized.current
-                      .wifi_parameters_configuration_error(
-                      (wifiParametersConfigurationResult
-                      as Error)
-                          .errorMessage))
-                }
-            })
-          });
+          (ssid, password) => {
+                provider
+                    .configureWifiInformation(ssid, password)
+                    .then((wifiParametersConfigurationResult) => {
+                          if (wifiParametersConfigurationResult is Success)
+                            {
+                              //TODO redirect to dashboard!
+                              showSnackbarError(Localized
+                                  .current.device_configuration_success),
+                            }
+                          else
+                            {
+                              //TODO parameters
+                              //wifi_parameters_configuration_error
+                              showSnackbarError(Localized.current
+                                  .wifi_parameters_configuration_error(
+                                      (wifiParametersConfigurationResult
+                                              as Error)
+                                          .errorMessage))
+                            }
+                        })
+              });
     } else {
-      showSnackbarError(
-          Localized.current.wifi_parameters_configuration_error(
-              (mqttParametersConfigurationResult as Error).errorMessage));
+      showSnackbarError(Localized.current.wifi_parameters_configuration_error(
+          (mqttParametersConfigurationResult as Error).errorMessage));
     }
   }
 
@@ -349,10 +346,14 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
     return Expanded(
         child: Column(
       children: [
-        const Icon(
-          Icons.wifi,
-          size: 80,
-        ).marginBottom(16), // Replace with the actual image path,
+        Container(
+          height: 150,
+          child: Center(
+              child: const Icon(
+            Icons.wifi,
+            size: 80,
+          ).marginBottom(16)),
+        ), // Replace with the actual image path,
         RichText(
           text: TextSpan(
             style: TextStyle(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../../network/models.dart';
+import '../home/chart_view.dart';
 
 int getDayOfWeek(String dateString) {
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
@@ -205,7 +206,7 @@ Widget leftTitleWidgets(double value, TitleMeta meta) {
     fontSize: 12,
   );
 
-  String text = value % TENTHS_CONSTANT != 0 ? "" : "${value.toInt()}Wh";
+  String text = value % EnergyChart.HORIZONTAL_CONSTANT != 0 ? "" : "${value.toInt()} Wh";
 
   return Text(text, style: style, textAlign: TextAlign.left);
 }

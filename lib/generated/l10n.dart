@@ -550,30 +550,30 @@ class Localized {
     );
   }
 
-  /// `To connect to the Device, follow these steps:\n    `
+  /// `To connect to the Device, follow these steps: \n\n`
   String get connection_instructions {
     return Intl.message(
-      'To connect to the Device, follow these steps:\n    ',
+      'To connect to the Device, follow these steps: \n\n',
       name: 'connection_instructions',
       desc: '',
       args: [],
     );
   }
 
-  /// `1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n`
+  /// `1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n\n`
   String get connection_step1 {
     return Intl.message(
-      '1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n',
+      '1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n\n',
       name: 'connection_step1',
       desc: '',
       args: [],
     );
   }
 
-  /// `2. Open the Wi-Fi settings on your device.\n`
+  /// `2. Open the Wi-Fi settings on your device.\n\n`
   String get connection_step2 {
     return Intl.message(
-      '2. Open the Wi-Fi settings on your device.\n',
+      '2. Open the Wi-Fi settings on your device.\n\n',
       name: 'connection_step2',
       desc: '',
       args: [],
@@ -590,10 +590,10 @@ class Localized {
     );
   }
 
-  /// `4. When prompted, enter the password: .\n`
+  /// `4. When prompted, enter the password: .`
   String get connection_step4 {
     return Intl.message(
-      '4. When prompted, enter the password: .\n',
+      '4. When prompted, enter the password: .',
       name: 'connection_step4',
       desc: '',
       args: [],

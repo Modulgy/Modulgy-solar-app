@@ -104,6 +104,7 @@ class ArticleWidget extends StatelessWidget {
         },
         child: Container(
           width: 150,
+          padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.0),
           ),

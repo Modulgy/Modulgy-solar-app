@@ -63,15 +63,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ligar ao dispositivo"),
         "connecting": MessageLookupByLibrary.simpleMessage("A ligar..."),
         "connection_instructions": MessageLookupByLibrary.simpleMessage(
-            "Para ligar ao Dispositivo, siga estes passos:\n "),
+            "Para ligar ao Dispositivo, siga estes passos:\n\n"),
         "connection_step1": MessageLookupByLibrary.simpleMessage(
-            "1. Certifique-se de que o dispositivo está a piscar uma luz amarela - se não estiver, prima o botão de alimentação até começar a piscar uma luz amarela.\n"),
+            "1. Certifique-se de que o dispositivo está a piscar uma luz amarela - se não estiver, prima o botão de alimentação até começar a piscar uma luz amarela.\n\n"),
         "connection_step2": MessageLookupByLibrary.simpleMessage(
-            "2. abra as definições de Wi-Fi no seu dispositivo.\n"),
+            "2. abra as definições de Wi-Fi no seu dispositivo.\n\n"),
         "connection_step3": MessageLookupByLibrary.simpleMessage(
-            "3. Ligue-se à rede denominada \"MK117-xxxx\".\n (Certifique-se de que o seu dispositivo está dentro do alcance da rede.)\n"),
+            "3. Ligue-se à rede denominada \"MK117-xxxx\".\n (Certifique-se de que o seu dispositivo está dentro do alcance da rede.)\n\n"),
         "connection_step4": MessageLookupByLibrary.simpleMessage(
-            "4. Quando solicitado, introduza a palavra-passe: .\n"),
+            "4. Quando solicitado, introduza a palavra-passe: "),
         "connection_step5": MessageLookupByLibrary.simpleMessage(
             "5. Uma vez ligado, regresse a esta aplicação e prima "),
         "consumption": MessageLookupByLibrary.simpleMessage("Consumo"),

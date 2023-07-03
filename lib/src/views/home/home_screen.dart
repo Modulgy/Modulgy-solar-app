@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: const EdgeInsets.only(bottom: 32),
       child: BodyWidget(context),
     ));
   }

@@ -13,6 +13,7 @@ class EnergyChart extends StatefulWidget {
 
   List<EnergyProduced> energyProduced;
   TimeMode selectedTimeMode;
+  static int HORIZONTAL_CONSTANT = 10;
 
   @override
   State<EnergyChart> createState() => _EnergyChartState();
@@ -25,7 +26,6 @@ class _EnergyChartState extends State<EnergyChart> {
   ];
 
   var mode = TimeMode.WEEKLY;
-  static const int TENTHS_CONSTANT = 10;
 
   bool showAvg = false;
 
@@ -101,11 +101,13 @@ class _EnergyChartState extends State<EnergyChart> {
         break;
     }
 
+    EnergyChart.HORIZONTAL_CONSTANT = max(divideAndRoundToClosestMultipleOfTen(maxEnergyEntry.toInt()), TENTHS_CONSTANT);
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: TENTHS_CONSTANT.toDouble(),
+        horizontalInterval: EnergyChart.HORIZONTAL_CONSTANT.toDouble(),
         verticalInterval: 1.5,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -141,7 +143,7 @@ class _EnergyChartState extends State<EnergyChart> {
             showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 32,
+            reservedSize: 48,
           ),
         ),
       ),
@@ -199,4 +201,10 @@ double findMaximum (List<double> list) {
   }
 
   return list.reduce((current, next) => current.compareTo(next) > 0 ? current : next);
+}
+
+int divideAndRoundToClosestMultipleOfTen(int value) {
+  int result = value ~/ 5;
+  int closestMultipleOfTen = result - (result % 10);
+  return closestMultipleOfTen;
 }

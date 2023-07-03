@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../network/models.dart';
 import '../../utils/app_colors.dart';
 import '../chart/chart_utils.dart';
+import '../home/chart_view.dart';
 
 class ProductionBarChart extends StatefulWidget {
   ProductionBarChart(this.energyProduced, this.selectedTimeMode, {super.key});
@@ -84,6 +85,8 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
     debugPrint("maxEnergyEntry: $maxEnergyEntry");
     debugPrint("flSpotEnergyProduced: $flSpotEnergyProduced");
 
+    EnergyChart.HORIZONTAL_CONSTANT = max(divideAndRoundToClosestMultipleOfTen(maxEnergyEntry.toInt()), TENTHS_CONSTANT);
+
     var titleWidgets = monthlyTitleWidgets;
     switch (widget.selectedTimeMode) {
       case TimeMode.WEEKLY:
@@ -103,7 +106,7 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        horizontalInterval: TENTHS_CONSTANT.toDouble(),
+        horizontalInterval: EnergyChart.HORIZONTAL_CONSTANT.toDouble(),
         getDrawingVerticalLine: (value) {
           return FlLine(
             color: Color(0xffD9D9D9),
@@ -132,7 +135,7 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
             showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 32,
+            reservedSize: 48,
           ),
         ),
       ),

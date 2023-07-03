@@ -60,15 +60,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Connect to Device"),
         "connecting": MessageLookupByLibrary.simpleMessage("Connecting..."),
         "connection_instructions": MessageLookupByLibrary.simpleMessage(
-            "To connect to the Device, follow these steps:\n    "),
+            "To connect to the Device, follow these steps: \n\n"),
         "connection_step1": MessageLookupByLibrary.simpleMessage(
-            "1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n"),
+            "1. Make sure the device is blinking a yellow light - if not, press the power button until it starts flashing a yellow light.\n\n"),
         "connection_step2": MessageLookupByLibrary.simpleMessage(
-            "2. Open the Wi-Fi settings on your device.\n"),
+            "2. Open the Wi-Fi settings on your device.\n\n"),
         "connection_step3": MessageLookupByLibrary.simpleMessage(
             "3. Connect to the network named \"MK117-xxxx\".\n   (Make sure your device is in the range of the network.)\n"),
         "connection_step4": MessageLookupByLibrary.simpleMessage(
-            "4. When prompted, enter the password: .\n"),
+            "4. When prompted, enter the password: ."),
         "connection_step5": MessageLookupByLibrary.simpleMessage(
             "5. Once connected, return to this app and press "),
         "consumption": MessageLookupByLibrary.simpleMessage("Consumption"),

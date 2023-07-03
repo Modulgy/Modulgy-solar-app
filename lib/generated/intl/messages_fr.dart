@@ -63,15 +63,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Connect to Device"),
         "connecting": MessageLookupByLibrary.simpleMessage("Connexion..."),
         "connection_instructions": MessageLookupByLibrary.simpleMessage(
-            "Pour vous connecter à l\'appareil, suivez les étapes suivantes:\n"),
+            "Pour vous connecter à l\'appareil, suivez les étapes suivantes:\n\n"),
         "connection_step1": MessageLookupByLibrary.simpleMessage(
-            "1. assurez-vous que l\'appareil fait clignoter une lumière jaune - si ce n\'est pas le cas, appuyez sur le bouton d\'alimentation jusqu\'à ce qu\'il commence à faire clignoter une lumière jaune.\n"),
+            "1. assurez-vous que l\'appareil fait clignoter une lumière jaune - si ce n\'est pas le cas, appuyez sur le bouton d\'alimentation jusqu\'à ce qu\'il commence à faire clignoter une lumière jaune.\n\n"),
         "connection_step2": MessageLookupByLibrary.simpleMessage(
-            "2. ouvrez les paramètres Wi-Fi de votre appareil.\n"),
+            "2. ouvrez les paramètres Wi-Fi de votre appareil.\n\n"),
         "connection_step3": MessageLookupByLibrary.simpleMessage(
-            "3. connectez-vous au réseau nommé \'MK117-xxxx\'.\n- (Assurez-vous que votre appareil est dans la portée du réseau.)\n"),
+            "3. connectez-vous au réseau nommé \'MK117-xxxx\' (Assurez-vous que votre appareil est dans la portée du réseau.)\n\n"),
         "connection_step4": MessageLookupByLibrary.simpleMessage(
-            "4. lorsque vous y êtes invité, entrez le mot de passe : .\n"),
+            "4. lorsque vous y êtes invité, entrez le mot de passe : "),
         "connection_step5": MessageLookupByLibrary.simpleMessage(
             "5. une fois connecté, revenez à cette application et appuyez sur "),
         "consumption": MessageLookupByLibrary.simpleMessage("Consommation"),
