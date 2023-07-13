@@ -91,5 +91,6 @@
   "total_production_per_day": "Produção total por dia",
   "month": "Mês",
   "year": "Ano",
-  "day": "Dia"
+  "day": "Dia",
+  "password_requirements": "Exigences du mot de passe :\n- Doit comporter 10 caractères ou plus\n- Doit contenir un chiffre\n- Doit contenir une lettre majuscule"
 }

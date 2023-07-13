@@ -92,5 +92,7 @@
   "total_production_per_day": "Production totale par jour",
   "month": "Mois",
   "year": "Année",
-  "day": "Jour"
+  "day": "Jour",
+  "password_requirements": "Requisitos da senha:\n- Deve ter 10 caracteres ou mais\n- Deve conter um número\n- Deve conter uma letra maiúscula"
+
 }

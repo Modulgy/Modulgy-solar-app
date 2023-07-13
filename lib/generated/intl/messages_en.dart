@@ -137,6 +137,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Type your password"),
         "password_mismatch_error":
             MessageLookupByLibrary.simpleMessage("Passwords do not match"),
+        "password_requirements": MessageLookupByLibrary.simpleMessage(
+            "Password requirements:\n- Must be equal or longer than 10 characters\n- Must contain a number\n- Must contain an uppercase character"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Press the power button to start the pairing mode."),
         "production": MessageLookupByLibrary.simpleMessage("Production"),

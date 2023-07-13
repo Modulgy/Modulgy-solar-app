@@ -51,8 +51,8 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
 
   BarChartData mainData(List<EnergyProduced> energyProduced) {
     debugPrint("energyProduced: ${energyProduced.first.date}");
-    var parsedProducedEnergy = parseEnergyInWhOrKWh(energyProduced)
-        .toList();
+    var shouldBeKWh = shouldBeKWhUnit(energyProduced);
+    var parsedProducedEnergy = parseEnergyInWhOrKWh(energyProduced).toList();
     var maxEnergyEntry = parsedProducedEnergy
         .reduce((curr, next) =>
             curr.energyProduced > next.energyProduced ? curr : next)
@@ -85,7 +85,9 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
     debugPrint("maxEnergyEntry: $maxEnergyEntry");
     debugPrint("flSpotEnergyProduced: $flSpotEnergyProduced");
 
-    EnergyChart.HORIZONTAL_CONSTANT = max(divideAndRoundToClosestMultipleOfTen(maxEnergyEntry.toInt()), TENTHS_CONSTANT);
+    EnergyChart.HORIZONTAL_CONSTANT = max(
+        divideAndRoundToClosestMultipleOfTen(maxEnergyEntry.toInt()),
+        TENTHS_CONSTANT);
 
     var titleWidgets = monthlyTitleWidgets;
     switch (widget.selectedTimeMode) {
@@ -103,6 +105,22 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
     }
 
     return BarChartData(
+      barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+              tooltipHorizontalAlignment: FLHorizontalAlignment.right,
+              tooltipMargin: 8,
+              tooltipHorizontalOffset: -40,
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                return BarTooltipItem(
+                  '${(group.barRods.first.toY).toStringAsFixed(2)} ${shouldBeKWh ? 'kWh' : 'Wh'}',
+                  const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                );
+              })),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,

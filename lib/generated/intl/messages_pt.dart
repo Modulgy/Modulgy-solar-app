@@ -141,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Introduza a sua palavra-passe"),
         "password_mismatch_error":
             MessageLookupByLibrary.simpleMessage("As senhas não coincidem"),
+        "password_requirements": MessageLookupByLibrary.simpleMessage(
+            "Exigences du mot de passe :\n- Doit comporter 10 caractères ou plus\n- Doit contenir un chiffre\n- Doit contenir une lettre majuscule"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Prima o botão de ligar/desligar para iniciar o modo de emparelhamento"),
         "production": MessageLookupByLibrary.simpleMessage("Produção"),

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 
 import '../../network/models.dart';
 import '../chart/chart_utils.dart';
-import '../production/bar_chart_view.dart';
 
 class EnergyChart extends StatefulWidget {
   EnergyChart(this.energyProduced, this.selectedTimeMode, {super.key});
@@ -52,6 +51,7 @@ class _EnergyChartState extends State<EnergyChart> {
   }
 
   LineChartData mainData(List<EnergyProduced> energyProduced) {
+    var shouldBeKWh = shouldBeKWhUnit(energyProduced);
     var parsedProducedEnergy = parseEnergyInWhOrKWh(energyProduced)
         .toList();
     var maxEnergyEntry = parsedProducedEnergy
@@ -104,6 +104,48 @@ class _EnergyChartState extends State<EnergyChart> {
     EnergyChart.HORIZONTAL_CONSTANT = max(divideAndRoundToClosestMultipleOfTen(maxEnergyEntry.toInt()), TENTHS_CONSTANT);
 
     return LineChartData(
+      lineTouchData: LineTouchData(
+        enabled: true,
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+          getTooltipItems: (touchedSpots) {
+            return touchedSpots.map(
+                  (LineBarSpot touchedSpot) {
+                const textStyle = TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                );
+                return LineTooltipItem(
+                  "${parsedProducedEnergy[touchedSpot.spotIndex].energyProduced.toStringAsFixed(2)} ${shouldBeKWh ? "kWh" : "Wh"}",
+                  textStyle,
+                );
+              },
+            ).toList();
+          },
+        ),
+        getTouchedSpotIndicator: (LineChartBarData barData,
+            List<int> spotIndexes) {
+          return spotIndexes.map((spotIndex) {
+            return TouchedSpotIndicatorData(
+              FlLine(
+                color: Colors.blueGrey.withOpacity(0.8),
+                strokeWidth: 0,
+              ),
+              FlDotData(
+                getDotPainter: (spot, percent, barData, index) {
+                  return FlDotCirclePainter(
+                    radius: 7,
+                    strokeWidth: 0,
+                    color: Colors.blueGrey,
+                  );
+                },
+              ),
+            );
+          }).toList();
+        },
+        handleBuiltInTouches: true,
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -158,6 +200,8 @@ class _EnergyChartState extends State<EnergyChart> {
       lineBarsData: [
         LineChartBarData(
           spots: flSpotEnergyProduced,
+          preventCurveOverShooting: true,
+          preventCurveOvershootingThreshold: 5.0,
           isCurved: true,
           gradient: LinearGradient(
             colors: fgradientColors,
@@ -202,7 +246,6 @@ double findMaximum (List<double> list) {
 
   return list.reduce((current, next) => current.compareTo(next) > 0 ? current : next);
 }
-
 int divideAndRoundToClosestMultipleOfTen(int value) {
   int result = value ~/ 5;
   int closestMultipleOfTen = result - (result % 10);

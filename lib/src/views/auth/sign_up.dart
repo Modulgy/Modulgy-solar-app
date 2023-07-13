@@ -67,7 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             validator: passwordValidate,
             onSaved: (value) => _password = value ?? "",
           ).marginBottom(15),
-          ForgotPassword().marginBottom(80),
+          ForgotPassword().marginBottom(20),
+          buildPasswordRequirementsWidget().marginBottom(60),
           ModulgyButton(
               title: Localized.of(context).signup_button,
               buttonState: getButtonState(auth.registeredInStatus),
@@ -81,6 +82,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ],
     );
   }
+
+  Widget buildPasswordRequirementsWidget() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(left: 16.0),
+      child: Text(
+        Localized.current.password_requirements,
+        style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+      ),
+    );
+  }
+
 
   void onSignUpPressed() {
     final form = _formKey.currentState;

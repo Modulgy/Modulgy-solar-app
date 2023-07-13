@@ -92,5 +92,6 @@
   "year": "Year",
   "day": "Day",
   "production": "Production",
-  "articles_header": "Read the Articles"
+  "articles_header": "Read the Articles",
+  "password_requirements": "Password requirements:\n- Must be equal or longer than 10 characters\n- Must contain a number\n- Must contain an uppercase character"
 }

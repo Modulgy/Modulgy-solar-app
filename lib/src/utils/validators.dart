@@ -20,8 +20,8 @@ String? passwordValidate(String? value) {
   }
 
   // Check if password length is at least 8 characters
-  if (value.length < 8) {
-    return 'Password must be at least 8 characters long.';
+  if (value.length < 10) {
+    return 'Password must be at least 10 characters long.';
   }
 
   // Check if password contains at least one number

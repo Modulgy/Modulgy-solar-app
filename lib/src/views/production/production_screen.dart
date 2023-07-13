@@ -201,7 +201,7 @@ Widget productionPerDaySection(BuildContext context) {
                           "Error: ${(snapshot.data as Error).errorMessage}")));
             }
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return  Container(padding: const EdgeInsets.only(top: 48),child: const Center(child: CircularProgressIndicator()),);
           }
         })
   ]);

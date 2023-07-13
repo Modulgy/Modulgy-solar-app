@@ -979,6 +979,16 @@ class Localized {
       args: [],
     );
   }
+
+  /// `Password requirements:\n- Must be equal or longer than 10 characters\n- Must contain a number\n- Must contain an uppercase character`
+  String get password_requirements {
+    return Intl.message(
+      'Password requirements:\n- Must be equal or longer than 10 characters\n- Must contain a number\n- Must contain an uppercase character',
+      name: 'password_requirements',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<Localized> {

@@ -141,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tapez votre mot de passe"),
         "password_mismatch_error": MessageLookupByLibrary.simpleMessage(
             "Les mots de passe ne correspondent pas"),
+        "password_requirements": MessageLookupByLibrary.simpleMessage(
+            "Requisitos da senha:\n- Deve ter 10 caracteres ou mais\n- Deve conter um número\n- Deve conter uma letra maiúscula"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Appuyer sur le bouton d\'alimentation pour lancer le mode d\'appairage"),
         "production": MessageLookupByLibrary.simpleMessage("Production"),
