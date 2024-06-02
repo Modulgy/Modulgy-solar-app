@@ -120,7 +120,7 @@ class _EnergyChartState extends State<EnergyChart> {
       lineTouchData: LineTouchData(
         enabled: true,
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+          getTooltipColor: (spot) => Colors.blueGrey.withOpacity(0.8),
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map(
               (LineBarSpot touchedSpot) {
