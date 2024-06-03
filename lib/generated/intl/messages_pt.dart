@@ -134,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "error_operation": m2,
         "existing_account":
             MessageLookupByLibrary.simpleMessage("Tem uma conta?"),
+        "failed_to_load_devices": MessageLookupByLibrary.simpleMessage(
+            "Falha ao carregar dispositivos"),
         "forgot_password": MessageLookupByLibrary.simpleMessage(
             "Esqueceu-se da palavra-passe?"),
         "i_understand": MessageLookupByLibrary.simpleMessage("Eu entendo"),
@@ -164,6 +166,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Não foram encontrados artigos."),
         "no_code":
             MessageLookupByLibrary.simpleMessage("Não recebeu um código?"),
+        "no_devices_found": MessageLookupByLibrary.simpleMessage(
+            "Nenhum dispositivo encontrado"),
         "no_wifi_devices":
             MessageLookupByLibrary.simpleMessage("Nenhum dispositivo Wifi"),
         "open_article_in_browser":
@@ -182,6 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "A senha deve ter pelo menos 10 caracteres"),
         "password_too_weak": MessageLookupByLibrary.simpleMessage(
             "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um caractere especial e um número"),
+        "please_add_new_device": MessageLookupByLibrary.simpleMessage(
+            "Adicione um novo dispositivo"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Prima o botão de ligar/desligar para iniciar o modo de emparelhamento"),
         "production": MessageLookupByLibrary.simpleMessage("Produção"),

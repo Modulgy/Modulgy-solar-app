@@ -1370,6 +1370,36 @@ class Localized {
     );
   }
 
+  /// `Failed to load devices`
+  String get failed_to_load_devices {
+    return Intl.message(
+      'Failed to load devices',
+      name: 'failed_to_load_devices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No devices found`
+  String get no_devices_found {
+    return Intl.message(
+      'No devices found',
+      name: 'no_devices_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add a new device`
+  String get please_add_new_device {
+    return Intl.message(
+      'Please add a new device',
+      name: 'please_add_new_device',
+      desc: '',
+      args: [],
+    );
+  }
+
   String getByErrorType(String errorType, String errorMessage) {
     return Intl.message(
       errorMessage,

@@ -133,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "error_loading_articles": MessageLookupByLibrary.simpleMessage(
             "Erreur lors du chargement des articles. Réessayez plus tard."),
         "error_operation": m2,
+        "failed_to_load_devices": MessageLookupByLibrary.simpleMessage(
+            "Échec du chargement des appareils"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Mot de passe oublié"),
         "i_understand": MessageLookupByLibrary.simpleMessage("Je comprends"),
@@ -164,6 +166,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aucun article trouvé."),
         "no_code": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez pas reçu de code ?"),
+        "no_devices_found":
+            MessageLookupByLibrary.simpleMessage("Aucun appareil trouvé"),
         "no_wifi_devices":
             MessageLookupByLibrary.simpleMessage("Aucun appareil Wifi"),
         "open_article_in_browser": MessageLookupByLibrary.simpleMessage(
@@ -182,6 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Le mot de passe doit comporter au moins 10 caractères"),
         "password_too_weak": MessageLookupByLibrary.simpleMessage(
             "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un caractère spécial et un chiffre"),
+        "please_add_new_device": MessageLookupByLibrary.simpleMessage(
+            "Veuillez ajouter un nouvel appareil"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Appuyer sur le bouton d\'alimentation pour lancer le mode d\'appairage"),
         "production": MessageLookupByLibrary.simpleMessage("Production"),

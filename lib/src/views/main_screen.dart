@@ -4,6 +4,8 @@ import 'package:moduluenergy/custom_icons_icons.dart';
 import 'package:moduluenergy/src/views/devices/devices_screen.dart';
 import 'package:moduluenergy/src/views/production/production_screen.dart';
 
+import '../network/mokodevice/moko_models.dart';
+import '../utils/utils.dart';
 import 'home/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -38,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Production',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wifi),
+            icon: Icon(Icons.solar_power),
             label: 'Devices',
           ),
         ],

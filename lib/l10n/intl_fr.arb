@@ -131,5 +131,8 @@
   "provide_email": "Indiquez votre adresse électronique",
   "provide_email_text": "Saisissez l'adresse électronique associée à votre compte. Nous vous enverrons un code de récupération de mots-clés pour votre adresse e-mail, que vous pourrez utiliser pour récupérer vos mots-clés en toute sécurité.",
   "empty_ssid_error": "Veuillez entrer le nom du réseau",
-  "empty_password_error": "Veuillez entrer le mot de passe"
+  "empty_password_error": "Veuillez entrer le mot de passe",
+  "failed_to_load_devices": "Échec du chargement des appareils",
+  "no_devices_found": "Aucun appareil trouvé",
+  "please_add_new_device": "Veuillez ajouter un nouvel appareil"
 }

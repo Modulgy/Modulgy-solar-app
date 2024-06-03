@@ -5,7 +5,10 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:moduluenergy/generated/l10n.dart';
+import 'package:moduluenergy/src/utils/utils.dart';
 
+import '../../database/database_helper.dart';
+import '../../views/devices/Device.dart';
 import '../result.dart';
 import 'moko_models.dart';
 
@@ -40,6 +43,7 @@ class MokoConnectionService {
       final response = await _sendTcpRequest('{"header": 4001}');
       final jsonData = jsonDecode(response);
       var parsedResponse = EnquiryDeviceInfoResponse.fromJson(jsonData);
+      Utils.saveDeviceToDatabase(parsedResponse, false);
       return wrapResult(parsedResponse, parsedResponse.code);
     } catch (e) {
       debugPrint('Failed to enquiry device info: $e');
@@ -97,7 +101,7 @@ class MokoConnectionService {
         completer.complete(response);
       },
       onError: (error) {
-        if(completer.isCompleted) return;
+        if (completer.isCompleted) return;
         completer.completeError(error);
       },
       cancelOnError: true,
@@ -111,7 +115,8 @@ class MokoConnectionService {
 
   Future<Result> sendSSLFileData(SSLFileType fileType, String filePath) async {
     const int maxPacketSize = 500;
-    int fileTypeOrdinal = fileType.index + 1; // CA root certificate - Range from 1 to 3
+    int fileTypeOrdinal =
+        fileType.index + 1; // CA root certificate - Range from 1 to 3
 
     ByteData fileData = await rootBundle.load(filePath);
     Uint8List certificateBytes = fileData.buffer.asUint8List();
@@ -137,7 +142,7 @@ class MokoConnectionService {
       );
 
       var sslUploadResult = await sendSSLFile(request);
-      if(sslUploadResult is Error) {
+      if (sslUploadResult is Error) {
         return sslUploadResult;
       }
 
@@ -155,8 +160,7 @@ class MokoConnectionService {
       print("Response: $response");
       return Success<T>(response);
     } else {
-      return Error(
-        Localized.current.device_error(mokoCode.toString()));
+      return Error(Localized.current.device_error(mokoCode.toString()));
     }
   }
 }

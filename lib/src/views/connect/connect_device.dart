@@ -1,6 +1,6 @@
+import 'dart:io';
+
 import 'package:app_settings/app_settings.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moduluenergy/main.dart';
@@ -8,12 +8,14 @@ import 'package:moduluenergy/src/network/mokodevice/moko_connection_provider.dar
 import 'package:moduluenergy/src/network/result.dart';
 import 'package:moduluenergy/src/utils/spacing_extensions.dart';
 import 'package:moduluenergy/src/utils/user_preferences.dart';
-import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+
 import '../../../generated/l10n.dart';
 import '../../network/models.dart';
+import '../../network/mokodevice/moko_models.dart';
+import '../../utils/utils.dart';
 import '../../widgets/app_button.dart';
 import '../auth/login_components.dart';
 
@@ -344,6 +346,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
           if (wifiParametersConfigurationResult is Success) {
             await _connectToWiFi(ssid, password);
             await Future.delayed(const Duration(seconds: 10));
+            Utils.saveDeviceToDatabase(mqttParametersConfigurationResult.data as EnquiryDeviceInfoResponse, true);
             setState(() {
               _isConnected = true;
               _connectionMessage =

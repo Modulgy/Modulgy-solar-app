@@ -7,6 +7,9 @@ import 'package:moduluenergy/src/network/mokodevice/moko_connection_service.dart
 import 'package:moduluenergy/src/network/mokodevice/moko_models.dart';
 
 import '../../../generated/l10n.dart';
+import '../../database/database_helper.dart';
+import '../../utils/utils.dart';
+import '../../views/devices/Device.dart';
 import '../result.dart';
 
 enum DeviceConnectionStatus {
