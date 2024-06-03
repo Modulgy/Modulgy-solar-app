@@ -129,5 +129,7 @@
   "open_article_in_browser": "Ouvrir l'article dans le navigateur",
   "send_code": "Envoyer le code",
   "provide_email": "Indiquez votre adresse électronique",
-  "provide_email_text": "Saisissez l'adresse électronique associée à votre compte. Nous vous enverrons un code de récupération de mots-clés pour votre adresse e-mail, que vous pourrez utiliser pour récupérer vos mots-clés en toute sécurité."
+  "provide_email_text": "Saisissez l'adresse électronique associée à votre compte. Nous vous enverrons un code de récupération de mots-clés pour votre adresse e-mail, que vous pourrez utiliser pour récupérer vos mots-clés en toute sécurité.",
+  "empty_ssid_error": "Veuillez entrer le nom du réseau",
+  "empty_password_error": "Veuillez entrer le mot de passe"
 }

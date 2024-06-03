@@ -114,6 +114,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Email already in use"),
         "email_hint": MessageLookupByLibrary.simpleMessage("Email here"),
         "email_label": MessageLookupByLibrary.simpleMessage("Type your email"),
+        "empty_password_error":
+            MessageLookupByLibrary.simpleMessage("Please enter password"),
+        "empty_ssid_error":
+            MessageLookupByLibrary.simpleMessage("Please enter SSID"),
         "energy_produced":
             MessageLookupByLibrary.simpleMessage("Energy Produced"),
         "enter_activation_code":

@@ -36,12 +36,15 @@ class MokoConnectionService {
   MokoConnectionService(this.host, this.port);
 
   Future<Result> enquiryDeviceInfo() async {
-    final response = await _sendTcpRequest('{"header": 4001}');
-
-
-    final jsonData = jsonDecode(response);
-    var parsedResponse = EnquiryDeviceInfoResponse.fromJson(jsonData);
-    return wrapResult(parsedResponse, parsedResponse.code);
+    try {
+      final response = await _sendTcpRequest('{"header": 4001}');
+      final jsonData = jsonDecode(response);
+      var parsedResponse = EnquiryDeviceInfoResponse.fromJson(jsonData);
+      return wrapResult(parsedResponse, parsedResponse.code);
+    } catch (e) {
+      debugPrint('Failed to enquiry device info: $e');
+      return Error('Failed to enquiry device info: $e');
+    }
   }
 
   Future<Result> configureMQTTInformation(

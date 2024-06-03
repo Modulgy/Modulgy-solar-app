@@ -128,5 +128,7 @@
   "open_article_in_browser": "Open article in browser",
   "send_code": "Send code",
   "provide_email": "Provide your email",
-  "provide_email_text": "Please enter the email address associated with your account. We will send a password reset code to that email address, which you can use to reset your password securely."
+  "provide_email_text": "Please enter the email address associated with your account. We will send a password reset code to that email address, which you can use to reset your password securely.",
+  "empty_ssid_error": "Please enter SSID",
+  "empty_password_error": "Please enter password"
 }

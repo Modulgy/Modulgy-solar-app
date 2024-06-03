@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moduluenergy/main.dart';
@@ -39,10 +40,10 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   @override
   void initState() {
     UserPreferences().getUser().then((user) => {
-      setState(() {
-        currentUser = user;
-      })
-    });
+          setState(() {
+            currentUser = user;
+          })
+        });
     // Wifi Scan only supported on Android :/
     if (Platform.isAndroid) {
       _startScan();
@@ -55,47 +56,47 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
-          child: BodyWidget(),
-        ));
+      padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
+      child: BodyWidget(),
+    ));
   }
 
   Widget availableDevicesList(List<WiFiAccessPoint> deviceList) {
     return _wifiList.isEmpty
         ? Expanded(
-        child: Center(
-            child: Text(
-              Localized.of(context).no_wifi_devices,
-              style: const TextStyle(fontSize: 18),
-            )))
+            child: Center(
+                child: Text(
+            Localized.of(context).no_wifi_devices,
+            style: const TextStyle(fontSize: 18),
+          )))
         : Expanded(
-        child: ListView.builder(
-            itemCount: _wifiList.length,
-            itemBuilder: (context, index) {
-              final isSelected =
-                  index == _selectedIndex; // Check if the item is selected
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (index == _selectedIndex) {
-                      _selectedIndex = -1;
-                      mokoApSsid = "";
-                    } else {
-                      _selectedIndex = index; // Update the selected index
-                      mokoApSsid = _wifiList[index].ssid;
-                    }
-                  });
-                },
-                child: ListTile(
-                    title: Text(_wifiList[index].ssid),
-                    subtitle: Text(_wifiList[index].bssid),
-                    trailing: isSelected
-                        ? const Icon(Icons.check_circle,
-                        color: ModulgyApp.primaryColor)
-                        : null // Highlight the selected item
-                ),
-              );
-            }));
+            child: ListView.builder(
+                itemCount: _wifiList.length,
+                itemBuilder: (context, index) {
+                  final isSelected =
+                      index == _selectedIndex; // Check if the item is selected
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (index == _selectedIndex) {
+                          _selectedIndex = -1;
+                          mokoApSsid = "";
+                        } else {
+                          _selectedIndex = index; // Update the selected index
+                          mokoApSsid = _wifiList[index].ssid;
+                        }
+                      });
+                    },
+                    child: ListTile(
+                        title: Text(_wifiList[index].ssid),
+                        subtitle: Text(_wifiList[index].bssid),
+                        trailing: isSelected
+                            ? const Icon(Icons.check_circle,
+                                color: ModulgyApp.primaryColor)
+                            : null // Highlight the selected item
+                        ),
+                  );
+                }));
   }
 
   Widget loadingView(MokoConnectionProvider provider) {
@@ -114,7 +115,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
               configurationStepDescriptions[provider.configurationStep] ??
                   Localized.of(context).connecting,
               style:
-              const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                  const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
             )
           ],
         ),
@@ -124,7 +125,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
 
   Widget BodyWidget() {
     MokoConnectionProvider connectionProvider =
-    Provider.of<MokoConnectionProvider>(context);
+        Provider.of<MokoConnectionProvider>(context);
 
     return Column(
       children: [
@@ -150,13 +151,13 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
                   Localized.of(context).press_power_button_text)),
           Platform.isAndroid
               ? Flexible(
-              child: IconButton(
-                  onPressed: () => {_startScan(), _getScannedResults()},
-                  icon: const Icon(
-                    Icons.refresh,
-                    size: 32,
-                    color: Colors.black,
-                  )))
+                  child: IconButton(
+                      onPressed: () => {_startScan(), _getScannedResults()},
+                      icon: const Icon(
+                        Icons.refresh,
+                        size: 32,
+                        color: Colors.black,
+                      )))
               : Container(),
         ]),
         if (connectionProvider.connectionStatus ==
@@ -165,27 +166,26 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
         else if (Platform.isAndroid)
           availableDevicesList(_wifiList)
         else if (Platform.isIOS)
-            showiOSPromptToConnectToWifi(),
+          showiOSPromptToConnectToWifi(),
         ModulgyButton(
             title: Localized.of(context).connect_button,
-            buttonState: ((_selectedIndex == -1 ||
-                connectionProvider.connectionStatus ==
-                    DeviceConnectionStatus.connecting) &&
-                Platform.isAndroid)
+            buttonState: ((Platform.isAndroid && _selectedIndex == -1 ||
+                        connectionProvider.connectionStatus ==
+                            DeviceConnectionStatus.connecting))
                 ? ButtonState.disabled
                 : ButtonState.enabled,
             onPressed: () => {
-              if (Platform.isAndroid)
-                {
-                  startConnectionFlow(_wifiList[_selectedIndex],
-                      connectionProvider, currentUser.uuid, null)
-                }
-              else
-                {
-                  startConnectionFlowiOS(
-                      connectionProvider, currentUser.uuid)
-                }
-            }).marginOnly(bottom: 20),
+                  if (Platform.isAndroid)
+                    {
+                      startConnectionFlow(_wifiList[_selectedIndex],
+                          connectionProvider, currentUser.uuid, null)
+                    }
+                  else
+                    {
+                      startConnectionFlowiOS(
+                          connectionProvider, currentUser.uuid)
+                    }
+                }).marginOnly(bottom: 20),
         if (_connectionMessage.isNotEmpty)
           Text(
             _connectionMessage,
@@ -202,7 +202,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
     final can = await WiFiScan.instance.canStartScan(askPermissions: true);
     switch (can) {
       case CanStartScan.yes:
-      // start full scan async-ly
+        // start full scan async-ly
         await WiFiScan.instance.startScan();
         break;
       case CanStartScan.noLocationPermissionDenied:
@@ -233,10 +233,10 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   void _getScannedResults() async {
     // check platform support and necessary requirements
     final can =
-    await WiFiScan.instance.canGetScannedResults(askPermissions: true);
+        await WiFiScan.instance.canGetScannedResults(askPermissions: true);
     switch (can) {
       case CanGetScannedResults.yes:
-      // get scanned results
+        // get scanned results
         final accessPoints = await WiFiScan.instance.getScannedResults();
         setState(() {
           _wifiList = accessPoints
@@ -270,7 +270,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
       bool? continueConnection) async {
     var wifiConnectionResult = Platform.isAndroid
         ? await WiFiForIoTPlugin.connect(accessPoint.ssid,
-        password: mokoApWifiPassword, security: NetworkSecurity.WPA)
+            password: mokoApWifiPassword, security: NetworkSecurity.WPA)
         : true;
     debugPrint("Wifi Connection result is: $wifiConnectionResult");
 
@@ -305,7 +305,7 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   void _mqttConnectionInternal(
       MokoConnectionProvider provider, String userUuid) async {
     var mqttParametersConfigurationResult =
-    await provider.configureMQTTParameters(userUuid);
+        await provider.configureMQTTParameters(userUuid);
     debugPrint(
         "MQTT Parameters configuration result is: $mqttParametersConfigurationResult");
 
@@ -343,23 +343,21 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
             .then((Result wifiParametersConfigurationResult) async {
           if (wifiParametersConfigurationResult is Success) {
             await _connectToWiFi(ssid, password);
-            await Future.delayed(const Duration(seconds: 10 ));
+            await Future.delayed(const Duration(seconds: 10));
             setState(() {
               _isConnected = true;
               _connectionMessage =
                   Localized.current.device_configuration_success;
             });
-
           } else {
             await _connectToWiFi(ssid, password);
             setState(() {
               _isConnected = false;
               _connectionMessage = Localized.current
                   .wifi_parameters_configuration_error(
-                  (wifiParametersConfigurationResult as Error)
-                      .errorMessage);
+                      (wifiParametersConfigurationResult as Error)
+                          .errorMessage);
             });
-
           }
         });
       });
@@ -370,47 +368,67 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   }
 
   Future<bool> _connectToWiFi(String ssid, String password) async {
-    bool isConnected = await WiFiForIoTPlugin.connect(
-        ssid,
-        password: password,
-        security: NetworkSecurity.WPA,
-        withInternet: true
-    );
-    WiFiForIoTPlugin.forceWifiUsage(true);
-
+    bool isConnected = false;
+    try {
+      isConnected = await WiFiForIoTPlugin.connect(ssid,
+          password: password,
+          security: NetworkSecurity.WPA,
+          withInternet: true);
+      WiFiForIoTPlugin.forceWifiUsage(true);
+    } catch (e) {
+      debugPrint("Error connecting to wifi: $e");
+    }
     return isConnected;
   }
 
   void showWifiDialog(
       BuildContext context, void Function(String, String) onSubmitted) {
+    final _formKey = GlobalKey<FormState>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(Localized.current.wifi_setup),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: ssidController,
-                decoration: InputDecoration(
-                  labelText: Localized.current.network_name_label,
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: ssidController,
+                  decoration: InputDecoration(
+                    labelText: Localized.current.network_name_label,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return Localized.current.empty_ssid_error;
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: Localized.current.password_hint,
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: Localized.current.password_hint,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return Localized.current.empty_password_error;
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                onSubmitted(ssidController.text, passwordController.text);
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).pop();
+                  onSubmitted(ssidController.text, passwordController.text);
+                }
               },
               child: Text(Localized.current.save_button),
             ),
@@ -423,63 +441,63 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
   Widget showiOSPromptToConnectToWifi() {
     return Expanded(
         child: Column(
-          children: [
-            Container(
-              height: 150,
-              child: Center(
-                  child: const Icon(
-                    Icons.wifi,
-                    size: 80,
-                  ).marginBottom(16)),
-            ), // Replace with the actual image path,
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                    fontFamily: GoogleFonts.urbanist().fontFamily,
-                    height: 1.5),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: Localized.current.connection_instructions,
-                    style: const TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                  TextSpan(
-                    text: Localized.current.connection_step1 +
-                        Localized.current.connection_step2 +
-                        Localized.current.connection_step3 +
-                        Localized.current.connection_step4,
-                    style: const TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                  const TextSpan(
-                    text: 'Moko4321',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text: '.\n${Localized.current.connection_step5}',
-                    style: const TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                  TextSpan(
-                    text: Localized.current.connect_button,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const TextSpan(
-                    text: '.',
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                ],
+      children: [
+        Container(
+          height: 150,
+          child: Center(
+              child: const Icon(
+            Icons.wifi,
+            size: 80,
+          ).marginBottom(16)),
+        ), // Replace with the actual image path,
+        RichText(
+          text: TextSpan(
+            style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: GoogleFonts.urbanist().fontFamily,
+                height: 1.5),
+            children: <TextSpan>[
+              TextSpan(
+                text: Localized.current.connection_instructions,
+                style: const TextStyle(fontWeight: FontWeight.normal),
               ),
-            ).marginBottom(16),
-            TextButton(
-              onPressed: () {
-                AppSettings.openWIFISettings();
-              },
-              child: Text(
-                Localized.current.open_settings_button,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              TextSpan(
+                text: Localized.current.connection_step1 +
+                    Localized.current.connection_step2 +
+                    Localized.current.connection_step3 +
+                    Localized.current.connection_step4,
+                style: const TextStyle(fontWeight: FontWeight.normal),
               ),
-            ),
-          ],
-        ));
+              const TextSpan(
+                text: 'Moko4321',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: '.\n${Localized.current.connection_step5}',
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
+              TextSpan(
+                text: Localized.current.connect_button,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const TextSpan(
+                text: '.',
+                style: TextStyle(fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+        ).marginBottom(16),
+        TextButton(
+          onPressed: () {
+            AppSettings.openWIFISettings();
+          },
+          child: Text(
+            Localized.current.open_settings_button,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+      ],
+    ));
   }
 }

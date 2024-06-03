@@ -1350,6 +1350,26 @@ class Localized {
     );
   }
 
+  /// `Please enter SSID`
+  String get empty_ssid_error {
+    return Intl.message(
+      'Please enter SSID',
+      name: 'empty_ssid_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter password`
+  String get empty_password_error {
+    return Intl.message(
+      'Please enter password',
+      name: 'empty_password_error',
+      desc: '',
+      args: [],
+    );
+  }
+
   String getByErrorType(String errorType, String errorMessage) {
     return Intl.message(
       errorMessage,

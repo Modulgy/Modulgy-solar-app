@@ -128,5 +128,7 @@
   "open_article_in_browser": "Abrir artigo no navegador",
   "send_code": "Enviar o código",
   "provide_email": "Forneça o seu email",
-  "provide_email_text": "Insira o endereço email associado à sua conta. Enviaremos um código de recuperação de palavra-passe para o seu email o qual poderá utilizar para recuperar a sua palavra-passe em segurança."
+  "provide_email_text": "Insira o endereço email associado à sua conta. Enviaremos um código de recuperação de palavra-passe para o seu email o qual poderá utilizar para recuperar a sua palavra-passe em segurança.",
+  "empty_ssid_error": "Por favor, insira o nome da rede",
+  "empty_password_error": "Por favor, insira a palavra-passe"
 }
