@@ -114,6 +114,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Email already in use"),
         "email_hint": MessageLookupByLibrary.simpleMessage("Email here"),
         "email_label": MessageLookupByLibrary.simpleMessage("Type your email"),
+        "empty_password_error":
+            MessageLookupByLibrary.simpleMessage("Please enter password"),
+        "empty_ssid_error":
+            MessageLookupByLibrary.simpleMessage("Please enter SSID"),
         "energy_produced":
             MessageLookupByLibrary.simpleMessage("Energy Produced"),
         "enter_activation_code":
@@ -126,6 +130,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "error_operation": m2,
         "existing_account":
             MessageLookupByLibrary.simpleMessage("Have an account?"),
+        "failed_to_load_devices":
+            MessageLookupByLibrary.simpleMessage("Failed to load devices"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "i_understand": MessageLookupByLibrary.simpleMessage("I understand"),
@@ -157,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No articles found"),
         "no_code":
             MessageLookupByLibrary.simpleMessage("Haven’t received a code?"),
+        "no_devices_found":
+            MessageLookupByLibrary.simpleMessage("No devices found"),
         "no_wifi_devices":
             MessageLookupByLibrary.simpleMessage("No Wifi devices"),
         "open_article_in_browser":
@@ -174,6 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Password must be at least 10 characters long"),
         "password_too_weak": MessageLookupByLibrary.simpleMessage(
             "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number"),
+        "please_add_new_device":
+            MessageLookupByLibrary.simpleMessage("Please add a new device"),
         "press_power_button_text": MessageLookupByLibrary.simpleMessage(
             "Press the power button to start the pairing mode."),
         "production": MessageLookupByLibrary.simpleMessage("Production"),

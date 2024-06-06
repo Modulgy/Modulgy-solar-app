@@ -14,6 +14,7 @@ import 'package:moduluenergy/src/views/auth/forgot_password_email.dart';
 import 'package:moduluenergy/src/views/auth/login.dart';
 import 'package:moduluenergy/src/views/auth/sign_up.dart';
 import 'package:moduluenergy/src/views/auth/user_provider.dart';
+import 'package:moduluenergy/src/views/devices/devices_screen.dart';
 import 'package:moduluenergy/src/views/home/home_screen.dart';
 import 'package:moduluenergy/src/views/home/settings_screen.dart';
 import 'package:moduluenergy/src/views/main_screen.dart';
@@ -56,7 +57,8 @@ class ModulgyApp extends StatelessWidget {
     final tabs = [
       // list of widgets to be displayed when a tab is selected
       HomeScreen(),
-      ProductionScreen()
+      ProductionScreen(),
+      DevicesScreen()
     ];
 
     return FutureBuilder(
@@ -64,55 +66,59 @@ class ModulgyApp extends StatelessWidget {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? MultiProvider(
-                providers: [
-                    ChangeNotifierProvider(create: (_) => AuthProvider()),
-                    ChangeNotifierProvider(create: (_) => UserProvider()),
-                    ChangeNotifierProvider(
-                        create: (_) => MokoConnectionProvider())
-                  ],
-                child: MaterialApp(
-                  title: 'Modulgy',
-                  debugShowCheckedModeBanner: false,
-                  supportedLocales: Localized.delegate.supportedLocales,
-                  localizationsDelegates: const [
-                    Localized.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate
-                  ],
-                  theme: ThemeData(
-                    inputDecorationTheme: InputDecorationTheme(
-                      labelStyle: AppStyles.textFieldStyle,
-                      hintStyle: AppStyles.textFieldStyle,
-                    ),
-                    fontFamily: GoogleFonts.urbanist().fontFamily,
-                    primarySwatch: primaryColor,
-                  ),
-                  initialRoute: snapshot.data?.isValid() == true
-                      ? ModulgyRoute.home.getRoute()
-                      : ModulgyRoute.login.getRoute(),
-                  routes: {
-                    ModulgyRoute.login.getRoute(): (context) =>
-                        const LoginScreen(),
-                    ModulgyRoute.signup.getRoute(): (context) =>
-                        const SignUpScreen(),
-                    ModulgyRoute.forgotPasswordEmail.getRoute(): (context) =>
-                        const ForgotPasswordEmailScreen(),
-                    ModulgyRoute.forgotPassword.getRoute(): (context) =>
-                        const ForgotPasswordScreen(
-                          key: null,
-                        ),
-                    ModulgyRoute.activate.getRoute(): (context) =>
-                        const ActivationCodeScreen(),
-                    ModulgyRoute.home.getRoute(): (context) => MainScreen(),
-                    ModulgyRoute.settings.getRoute(): (context) =>
-                        const SettingsScreen(),
-                    ModulgyRoute.connect.getRoute(): (context) =>
-                        const ConnectDeviceScreen(),
-                    ModulgyRoute.allArticles.getRoute(): (context) =>
-                        const AllArticlesScreen(),
-                  },
-                ))
+            providers: [
+              ChangeNotifierProvider(create: (_) => AuthProvider()),
+              ChangeNotifierProvider(create: (_) => UserProvider()),
+              ChangeNotifierProvider(
+                  create: (_) => MokoConnectionProvider())
+            ],
+            child: MaterialApp(
+              title: 'Modulgy',
+              debugShowCheckedModeBanner: false,
+              supportedLocales: Localized.delegate.supportedLocales,
+              localizationsDelegates: const [
+                Localized.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+              theme: ThemeData(
+                inputDecorationTheme: InputDecorationTheme(
+                  labelStyle: AppStyles.textFieldStyle,
+                  hintStyle: AppStyles.textFieldStyle,
+                ),
+                fontFamily: GoogleFonts
+                    .urbanist()
+                    .fontFamily,
+                primarySwatch: primaryColor,
+              ),
+              initialRoute: snapshot.data?.isValid() == true
+                  ? ModulgyRoute.home.getRoute()
+                  : ModulgyRoute.login.getRoute(),
+              routes: {
+                ModulgyRoute.login.getRoute(): (context) =>
+                const LoginScreen(),
+                ModulgyRoute.signup.getRoute(): (context) =>
+                const SignUpScreen(),
+                ModulgyRoute.forgotPasswordEmail.getRoute(): (context) =>
+                const ForgotPasswordEmailScreen(),
+                ModulgyRoute.forgotPassword.getRoute(): (context) =>
+                const ForgotPasswordScreen(
+                  key: null,
+                ),
+                ModulgyRoute.activate.getRoute(): (context) =>
+                const ActivationCodeScreen(),
+                ModulgyRoute.home.getRoute(): (context) => MainScreen(),
+                ModulgyRoute.settings.getRoute(): (context) =>
+                const SettingsScreen(),
+                ModulgyRoute.connect.getRoute(): (context) =>
+                const ConnectDeviceScreen(),
+                ModulgyRoute.allArticles.getRoute(): (context) =>
+                const AllArticlesScreen(),
+                ModulgyRoute.connectedDevices.getRoute(): (context) =>
+                const DevicesScreen(),
+              },
+            ))
             : CircularProgressIndicator(color: AppColors.primaryColor,);
       },
     );
@@ -125,6 +131,7 @@ enum ModulgyRoute {
   activate,
   home,
   connect,
+  connectedDevices,
   forgotPasswordEmail,
   forgotPassword,
   settings,
@@ -153,6 +160,8 @@ enum ModulgyRoute {
         return '/${ModulgyRoute.allArticles.name}';
       case ModulgyRoute.article:
         return '/${ModulgyRoute.article.name}';
+      case ModulgyRoute.connectedDevices:
+        return '/${ModulgyRoute.connectedDevices.name}';
       default:
         return '/${ModulgyRoute.login.name}';
     }

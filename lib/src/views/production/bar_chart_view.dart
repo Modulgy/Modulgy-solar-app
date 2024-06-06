@@ -106,7 +106,7 @@ class _ProductionBarChartState extends State<ProductionBarChart> {
     return BarChartData(
       barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+              getTooltipColor: (spot) => Colors.blueGrey.withOpacity(0.8),
               tooltipHorizontalAlignment: FLHorizontalAlignment.right,
               tooltipMargin: 8,
               tooltipHorizontalOffset: -40,
