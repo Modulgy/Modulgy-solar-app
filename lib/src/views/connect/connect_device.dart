@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moduluenergy/main.dart';
 import 'package:moduluenergy/src/network/mokodevice/moko_connection_provider.dart';
@@ -172,8 +173,8 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
         ModulgyButton(
             title: Localized.of(context).connect_button,
             buttonState: ((Platform.isAndroid && _selectedIndex == -1 ||
-                        connectionProvider.connectionStatus ==
-                            DeviceConnectionStatus.connecting))
+                    connectionProvider.connectionStatus ==
+                        DeviceConnectionStatus.connecting))
                 ? ButtonState.disabled
                 : ButtonState.enabled,
             onPressed: () => {
@@ -340,13 +341,16 @@ class _ConnectDeviceScreenState extends State<ConnectDeviceScreen> {
           return;
         }
 
+        Utils.saveDeviceToDatabase(
+            mqttParametersConfigurationResult.data as EnquiryDeviceInfoResponse,
+            true);
+
         provider
             .configureWifiInformation(ssid, password)
             .then((Result wifiParametersConfigurationResult) async {
           if (wifiParametersConfigurationResult is Success) {
             await _connectToWiFi(ssid, password);
             await Future.delayed(const Duration(seconds: 10));
-            Utils.saveDeviceToDatabase(mqttParametersConfigurationResult.data as EnquiryDeviceInfoResponse, true);
             setState(() {
               _isConnected = true;
               _connectionMessage =

@@ -56,13 +56,16 @@ class MokoConnectionProvider with ChangeNotifier {
   Future<Result> configureMQTTParameters(String uuid) async {
     final mokoConnectionService = MokoConnectionService(mokoDeviceHost, mokoDevicePort);
 
-    Result result = Success("");
+    Result result = Success<EnquiryDeviceInfoResponse?>(null);
 
     _updateStatus(DeviceConnectionStatus.connecting, DeviceConfigurationStep.enquiryDeviceInfo);
     var deviceInfo = await mokoConnectionService.enquiryDeviceInfo();
+
     if (deviceInfo is Error) {
       return _handleError(deviceInfo, DeviceConfigurationStep.enquiryDeviceInfo);
     }
+
+    result = deviceInfo;
 
     _updateStep(DeviceConfigurationStep.configureMQTTInformation);
     var mqttInfoRequest = _getMQTTInformationRequest(uuid);
